@@ -1,0 +1,26 @@
+CMY Crash:
+
+Dan:
+GameManagement.cs
+Ammo.cs
+Yam.cs
+
+Brendan:
+Ship.cs
+Shield.cs extends Spawnable + Flipping renderer
+
+Emma:
+Spawner.cs
+Spawnable.cs
+PowerShot.cs extends Spawnable
+
+
+Adam
+MachineGun.cs
+Cannon.cs
+
+Josh:
+HUD.cs
+Scrolling Background
+Wrap animation
+Falloff.cs
