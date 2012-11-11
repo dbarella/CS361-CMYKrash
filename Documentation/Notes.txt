@@ -3,7 +3,7 @@ CMY Crash:
 Dan:
 GameManagement.cs
 Ammo.cs
-Yam.cs
+Laser.cs (Yam)
 
 Brendan:
 Ship.cs
@@ -16,6 +16,7 @@ PowerShot.cs extends Spawnable
 
 
 Adam
+Weapon.cs
 MachineGun.cs
 Cannon.cs
 
