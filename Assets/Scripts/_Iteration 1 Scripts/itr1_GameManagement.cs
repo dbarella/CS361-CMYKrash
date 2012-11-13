@@ -3,7 +3,7 @@ using System.Collections;
 
 //Last modified by: Brendan, Thursday 11/8 @ 7 PM
 
-public class GameManagement : MonoBehaviour {
+public class itr1_GameManagement : MonoBehaviour {
 	
 	//distance the player is spawned from the left of the screen
 	public float leftBuff = 10;
