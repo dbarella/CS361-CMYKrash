@@ -18,7 +18,7 @@ public abstract class Spawnable : MonoBehaviour {
 	public void ChangeLane(int i){
 		if(!laneChanging){ 
 			laneChanging = true;
-			target = transform.position.y + gm.laneHeight*i;
+			target = transform.position.y + gm.GetLaneHeight()*i;
 		}
 		else if(i*transform.position.y >= i*target){
 			laneChanging = false;
