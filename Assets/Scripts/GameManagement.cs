@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameManagement : MonoBehaviour {
 	
-	public GameObject shipPrefab;
+	public GameObject[] shipPrefabs;
 	public GameObject spawnerPrefab;
 	
 	public int numLanes = 7;
@@ -21,16 +21,14 @@ public class GameManagement : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		//Instantiates the camera s.t. the z-axis passes through the center of the screen.
-		Vector3 lowerLeft = camera.ScreenToWorldPoint (new Vector3 (0,0,camera.nearClipPlane));
-		transform.Translate(new Vector3(-lowerLeft.x,-lowerLeft.y/2.0f,-10));
-		
 		//Height and Width in world units
 		Vector3 hnw = camera.ScreenToWorldPoint(new Vector3(Screen.width,Screen.height,camera.nearClipPlane));
-		screenHeight = hnw.y;
+		screenHeight = hnw.y  * 2.0f;
 		screenWidth = hnw.x;
 		
 		laneHeight = screenHeight / (float) numLanes;
+		
+		Debug.Log(laneHeight);
 		
 		spawners = new GameObject[numLanes];
 		ships = new GameObject[numShips];
@@ -48,16 +46,21 @@ public class GameManagement : MonoBehaviour {
 		//Setup the spawners
 		int i = -3;
 		foreach(GameObject spawner in spawners) {
-			spawners[i+3] = Instantiate(spawnerPrefab, new Vector3(screenWidth, (float)i * laneHeight, 0), Quaternion.identity) as GameObject;
+			spawners[i+3] = Instantiate(spawnerPrefab, new Vector3(screenWidth, (float)i * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
 			i++;
 		}
 		
 		//Setup the ships
-		i=-1;
+		i = -1;
 		foreach(GameObject ship in ships) {
-			ships[i+1] = Instantiate(shipPrefab, new Vector3(shipSpawnOffset, (float)i * laneHeight, 0), Quaternion.identity) as GameObject;
+			Debug.Log(shipPrefabs[i+1]);
+			ships[i+1] = Instantiate(shipPrefabs[i+1], new Vector3(shipSpawnOffset - screenWidth, (float)i * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
 			i++;
 		}
+	}
+	
+	public void ShipDied(int i) {
+		if(i >=0 && i < ships.Length) ships[i] = null;
 	}
 	
 	public void Reset() {
