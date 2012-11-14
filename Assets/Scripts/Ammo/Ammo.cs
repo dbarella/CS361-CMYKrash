@@ -14,4 +14,7 @@ public abstract class Ammo : MonoBehaviour {
 		//Move forward constantly at speed rate.
 		transform.Translate(speed*Vector3.right*Time.deltaTime);
 	}
+	public void Die(){
+		Destroy(gameObject);
+	}
 }
