@@ -28,7 +28,7 @@ public class GameManagement : MonoBehaviour {
 		
 		laneHeight = screenHeight / (float) numLanes;
 		
-		Debug.Log(laneHeight);
+		Debug.Log("GameManagement: " + screenWidth);
 		
 		spawners = new GameObject[numLanes];
 		ships = new GameObject[numShips];

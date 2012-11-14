@@ -14,15 +14,15 @@ public class PowerShot : Spawnable {
 	}
 	
 	/*If we collide with a ship object, have the ship collect this powerup.
-	 */
 	void OnTriggerEnter(Collider other){
 		if(other.gameObject.tag == "Player"){
 			other.GetComponent<Ship>().GetItem(this.gameObject.tag);
 		}
-	}
+	}	 */
+
 	
 	/*Must be overriden*/
-	override public void TakeDamage(){
+	public void TakeDamage(){
 		return;
 	}
 }

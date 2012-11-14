@@ -4,19 +4,22 @@ using System.Collections;
 public class Bomb : Ammo {
 	private float halfScreen;
 	private float laneHeight;
+	private float initPosit;
 	
 	void Start(){
-			GameManagement gm = Camera.main.GetComponent<GameManagement>();
-			halfScreen = gm.GetScreenWidth();
-			laneHeight = gm.GetLaneHeight();
+		GameManagement gm = Camera.main.GetComponent<GameManagement>();
+		halfScreen = gm.GetScreenWidth()/2.0f;
+		laneHeight = gm.GetLaneHeight();
+		initPosit = transform.position.x;
 	}
 	
 	void Update () {
 		//if not to middle of screen, move to the right
-		if(transform.position.x < halfScreen)
+		if(transform.position.x < halfScreen + initPosit) //Check this logic
 			transform.Translate(speed*Vector3.right*Time.deltaTime);
 		//otherwise, kaboom
 		else{
+			//Debug.Log("Bomb" + halfScreen);
 			Explode();
 		}
 	}
@@ -25,7 +28,7 @@ public class Bomb : Ammo {
 		Spawnable[] objects = FindObjectsOfType(typeof(Spawnable)) as Spawnable[];
 		foreach(Spawnable s in objects){
 			//if within range and not a powerup
-			if(s.GetComponent<PowerUp>() == null &&Distance (s.transform.position) < laneHeight/2){
+			if(/*s.GetComponent<PowerUp>() == null &&*/ Distance (s.transform.position) < laneHeight/2){
 				//then do damage
 				s.TakeDamage(damage);
 			}
