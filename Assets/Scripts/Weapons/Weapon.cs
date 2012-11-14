@@ -14,17 +14,18 @@ public abstract class Weapon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetButtonDown("Jump"))
+			StandardShot();
 		//Decriment cooldown;
 		if(cooldown > 0)
 			cooldown -= Time.deltaTime;
 	}
 	
-	public abstract void StandardShot();
-	/*
+	public void StandardShot(){
 		//Instantiate a shot, pointing the same direction as the shooter.
 		GameObject o = Instantiate(ammo, this.transform.position, Quaternion.identity) as GameObject;
 		cooldown = cdtime;
-	*/
+	}
 	
 	public abstract void PowerShot();
 	
