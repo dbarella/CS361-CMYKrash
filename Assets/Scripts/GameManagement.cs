@@ -70,7 +70,9 @@ public class GameManagement : MonoBehaviour {
 	public float GetLaneHeight(){
 		return laneHeight;
 	}
-	
+	public float GetScreenWidth(){
+		return screenWidth;
+	}
 	public float GetGameSpeed() {
 		return gameSpeed;
 	}
