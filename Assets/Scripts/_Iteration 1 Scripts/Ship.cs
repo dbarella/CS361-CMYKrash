@@ -32,10 +32,10 @@ public class Ship : MonoBehaviour {
 		health = 6;
 		//Source the Game Management
 		mgmt = Camera.main.GetComponent<GameManagement>();
-		laneHeight = mgmt.laneHeight;
+		//laneHeight = mgmt.laneHeight;
 		//get boundaries of the board
-		sHeight = mgmt.sHeight;
-		sWidth = mgmt.sWidth;
+		//sHeight = mgmt.sHeight;
+		//sWidth = mgmt.sWidth;
 		invincibilityCounter = 0;
 	}
 	
@@ -135,7 +135,7 @@ public class Ship : MonoBehaviour {
 		//goodbye
 		Debug.Log("ship is out of healths.  Calling mgmt.PlayerDead()");
 		//Hello, management? Yes, the player's dead. He won't be a problem anymore.
-		mgmt.PlayerDead(shipNo);
+		mgmt.ShipDied(shipNo);
 	}
 	
 }

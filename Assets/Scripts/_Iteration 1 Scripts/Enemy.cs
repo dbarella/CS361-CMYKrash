@@ -22,10 +22,10 @@ public class Enemy : MonoBehaviour {
 	void Start () {
 		//Source the Game Management
 		mgmt = Camera.main.GetComponent<GameManagement>();
-		laneHeight = mgmt.laneHeight;
+		laneHeight = mgmt.GetLaneHeight();
 		//get length and width of the board
-		sHeight = mgmt.sHeight;
-		sWidth = mgmt.sWidth;
+		//sHeight = mgmt.sHeight;
+		//sWidth = mgmt.sWidth;
 	}
 	
 	// Update is called once per frame
@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour {
 		if(col.gameObject.tag == "Player"){
 			Debug.Log("That something was a player");
 			int shipNo = col.gameObject.GetComponent<Ship>().getNo();
-			mgmt.PlayerHit(damageDealt, shipNo);
+			//mgmt.PlayerHit(damageDealt, shipNo);
 			Destroy(gameObject);
 		}
 		if(col.gameObject.tag == "Planet"){

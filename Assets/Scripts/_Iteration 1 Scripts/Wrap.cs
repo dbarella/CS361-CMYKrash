@@ -9,9 +9,9 @@ public class Wrap : MonoBehaviour {
 	void Start () {
 		mgmt = Camera.main.GetComponent<GameManagement>();
 		bottombound = 0;
-		topbound = mgmt.sHeight;
-		toplane = topbound - mgmt.laneHeight/2;
-		bottomlane = bottombound + mgmt.laneHeight/2;
+		//topbound = mgmt.sHeight;
+		//toplane = topbound - mgmt.laneHeight/2;
+		//bottomlane = bottombound + mgmt.laneHeight/2;
 	}
 	
 	// Update is called once per frame

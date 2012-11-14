@@ -12,7 +12,7 @@ public class FallOff : MonoBehaviour {
 	void Update () {
 		
 		if(renderer.bounds.max.x <leftbound){
-			m.ObjectDead();	
+			//m.ObjectDead();	
 			Destroy(gameObject);
 		}
 	}

@@ -22,9 +22,9 @@ public class hud : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		mgmt = GetComponent<GameManagement>();
-		ship1 = mgmt.GetShip(1);
-		ship2 = mgmt.GetShip(2);
-		ship3 = mgmt.GetShip(3);
+		//ship1 = mgmt.GetShip(1);
+		//ship2 = mgmt.GetShip(2);
+		//ship3 = mgmt.GetShip(3);
 		ship1Script = ship1.GetComponent<Ship>();
 		ship2Script = ship2.GetComponent<Ship>();
 		ship3Script = ship3.GetComponent<Ship>();

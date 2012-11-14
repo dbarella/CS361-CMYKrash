@@ -32,7 +32,7 @@ public class Planet : MonoBehaviour {
 		if(col.gameObject.tag == "Player"){
 			//Debug.Log ("Are we there yet?");
 			int shipNo = col.gameObject.GetComponent<Ship>().getNo();
-			mgmt.PlayerHit(damageDealt, shipNo);
+			//mgmt.PlayerHit(damageDealt, shipNo);
 			Debug.Log(gameObject);
 			Destroy(gameObject);
 		}
