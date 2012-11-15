@@ -11,6 +11,10 @@ public abstract class Spawnable : MonoBehaviour {
 	void Start(){
 		gm = Camera.main.GetComponent<GameManagement>();
 		laneChanging = false;
+		Scale ();
+	}
+	
+	protected virtual void Scale(){	
 	}
 	public void Move(){
 		//error, object set to null reference of an object

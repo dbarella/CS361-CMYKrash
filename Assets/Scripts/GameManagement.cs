@@ -20,7 +20,7 @@ public class GameManagement : MonoBehaviour {
 	private GameObject[] ships;
 	
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		//Height and Width in world units
 		Vector3 hnw = camera.ScreenToWorldPoint(new Vector3(Screen.width,Screen.height,camera.nearClipPlane));
 		screenHeight = hnw.y  * 2.0f;
