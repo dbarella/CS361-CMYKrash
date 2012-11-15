@@ -36,18 +36,23 @@ public class Ship : MonoBehaviour {
 	/* VARIABLES */
 	
 	//health
-	public int health=7;
+	public float health=7.0f;
+	
 	
 	//for use in Move();
+	public float shipSpeed = 10.0f;
+	//how much faster lane changing goes than regular movement
+	public float laneChangeMult = 2.0f;
 	protected float laneHeight;
-	protected float target;
+	protected float amtMoved;
 	protected bool laneChanging;
+	protected int direction;
 	public int curLane; //this should be set in GameManagement upon instantiation.
 	
 	//powerup bools (both start as false)
 	private bool shielded = false;
 	private bool powerShot = false;
-
+	
 	
 	
 	// Use this for initialization
@@ -57,7 +62,6 @@ public class Ship : MonoBehaviour {
 		//storing laneheight for future use
 		laneHeight = mgmt.GetLaneHeight();
 		laneChanging = false;
-		target = transform.position.y;
 		//Source the weapon? or is that part of the prefab?
 		
 		
@@ -73,57 +77,49 @@ public class Ship : MonoBehaviour {
 	
 	
 	public void Move(){
-		
+		if(laneChanging) ChangeLanes (direction);
 		//Input keys for changing of the lanes.  
-		if(Input.GetButtonDown("Up") && !laneChanging){//if we want to move up, and we're not currently changing lanes
-			curLane--;
-			if(curLane < 1) { //if we need to wrap around top:
-				curLane = 7;//set to bottom lane
-				transform.position.y = transform.position.y - (6.0f * laneHeight);//port ship over there (6 lanes down)
-				target = transform.position.y;//and reset the target.
-			}else{//otherwise
-				target = transform.position.y + laneHeight();//we set our target
-				laneChanging = true;//and we lock out the up+down keys
-				while( transform.position.y <= target) {//for this while loop
-					transform.Translate(mgmt.GetGameSpeed()*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
-				}
-				laneChanging = false;//at the end we allow more key presses
-			}
+		else if(Input.GetKeyDown("w")){//if we want to move up, and we're not currently changing lanes
+			direction = 1;
+			ChangeLanes(direction);
 		}
-		
-		
-		if(Input.GetButtonDown("Down") && !laneChanging){
-			curLane++;
-			if(curLane > 7) {//if we need to wrap around bot:
-				curLane = 1; //set to top lane
-				transform.position.y = transform.position.y + (6.0f * laneHeight);//port ship over there (6 lanes up)
-				target = transform.position.y; //and reset the target.
-			}else{//otherwise
-				target = transform.position.y - laneHeight();//we set our target
-				laneChanging = true;//and we lock out the up+down keys
-				while( transform.position.y >= target) {//for this while loop
-					transform.Translate(mgmt.GetGameSpeed()*(-1.0f)*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
-				}
-			laneChanging = false;//at the end we allow more key presses
-			}
+		else if(Input.GetKeyDown("s")){
+			direction = -1;
+			ChangeLanes(direction);
 		}
-		if(Input.GetButtonDown ("Right")){
+		if(Input.GetKey ("d")){
 			if(transform.position.x < (Screen.width / 2)){//this doesn't allow the player to go beyond halfway across the screen.
-				transform.Translate(new Vector3(1,0,0)*Time.fixedDeltaTime);	
+				transform.Translate(new Vector3(1,0,0)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
-		if(Input.GetButtonDown ("Left")){ 
+		if(Input.GetKey ("a")){ 
 			if(transform.position.x > (Camera.main.WorldToScreenPoint(new Vector3(0,0)).x)) {//this doesn't allow the player to go off the left side.
-				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.fixedDeltaTime);	
+				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
 		
 	}
 	
+	//helper method for changing lanes. direction is -1 or 1 depending on whether ship is going up or down.
+	private void ChangeLanes(int direction){
+		print(laneChanging+" "+amtMoved);
+		if(!laneChanging){
+			laneChanging = true;
+			amtMoved = 0;
+		}
+		else if(amtMoved >= laneHeight){
+			laneChanging = false;
+			this.direction = 0;
+		}
+		else{
+			Vector3 translateVector = new Vector3(0,laneChangeMult*shipSpeed*(float)direction*Time.fixedDeltaTime,0);
+			transform.Translate(translateVector);
+			amtMoved += Mathf.Abs(translateVector.y);
+		}
+	}
 	
 	
-	
-	public void TakeDamage(int damage){
+	public void TakeDamage(float damage){
 		if(shielded){//If we have a shield
 			shielded = false;//pop it
 		}else{//otherwise
@@ -154,14 +150,14 @@ public class Ship : MonoBehaviour {
 	}
 	
 	public void OnTriggerEnter(Collider other) {
-		if(other.gameObject.getTag("Enemy")) {
-			TakeDamage(other.gameObject.damage);
+		if(other.gameObject.CompareTag("Enemy")) {
+			TakeDamage(other.gameObject.GetComponent<Spawnable>().GetDamage());
 		}
-		if(other.gameObject.getTag("PowerUp")) {//otherwise, if we have a powerup,
-			if(other.gameObject.IsShield) { //if it's a shield
+		if(other.gameObject.CompareTag("PowerUp")) {//otherwise, if we have a powerup,
+			if(other.gameObject.GetComponent<PowerUp>().IsShield()) { //if it's a shield
 				shielded = true;//turn on shield
 			}else{//otherwise, it has to be a powershot
-				weapon.GivePowerSHot();
+				weapon.PowerShot();
 			}
 		}
 		
@@ -186,7 +182,7 @@ public class Ship : MonoBehaviour {
 	public void Die(GameManagement mgmt) {
 	
 		Debug.Log("ship is out of healths.  Calling mgmt.PlayerDead()");
-		mgmt.ShipDied();//Lets the GM know a ship is dead(do we care anymore?)
+		//mgmt.ShipDied();//Lets the GM know a ship is dead(do we care anymore?) /*Commented out by Emma for now as this method needs an int argument--which ship it is, I think?-- and if the ship knows this about itself, I can't find it. If this actually needs to be here, that'll need to be fixed for real.*/
 		Destroy(gameObject);//and destroys itself.
 		
 	}
