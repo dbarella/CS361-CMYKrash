@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class Spawnable : MonoBehaviour {
-	protected float speedMult;
-	protected float health;
-	protected float damage;
+	public float speedMult;
+	public float health;
+	public float damage;
 	protected GameManagement gm;
 	protected bool laneChanging;
 	protected float target;
@@ -13,6 +13,7 @@ public abstract class Spawnable : MonoBehaviour {
 		laneChanging = false;
 	}
 	public void Move(){
+		//error, object set to null reference of an object
 		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));
 	}
 	public void ChangeLane(int i){
