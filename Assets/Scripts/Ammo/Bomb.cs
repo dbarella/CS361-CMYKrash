@@ -3,13 +3,11 @@ using System.Collections;
 
 public class Bomb : Ammo {
 	private float halfScreen;
-	private float laneHeight;
 	private float initPosit;
-	
+	public GameObject explosionPrefab;
 	void Start(){
 		GameManagement gm = Camera.main.GetComponent<GameManagement>();
 		halfScreen = gm.GetScreenWidth()/2.0f;
-		laneHeight = gm.GetLaneHeight();
 		initPosit = transform.position.x;
 	}
 	
@@ -23,16 +21,20 @@ public class Bomb : Ammo {
 			Explode();
 		}
 	}
+	void OnCollisionEnter(Collision other){
+		Explode();
+	}
 	private void Explode(){
 		//get all spawnables
-		Spawnable[] objects = FindObjectsOfType(typeof(Spawnable)) as Spawnable[];
+		/*Spawnable[] objects = FindObjectsOfType(typeof(Spawnable)) as Spawnable[];
 		foreach(Spawnable s in objects){
 			//if within range and not a powerup
-			if(/*s.GetComponent<PowerUp>() == null &&*/ Distance (s.transform.position) < laneHeight/2){
+			if(/*s.GetComponent<PowerUp>() == null && Distance (s.transform.position) < laneHeight/2){
 				//then do damage
 				s.TakeDamage(damage);
 			}
-		}
+		}*/
+		Instantiate(explosionPrefab, transform.position, transform.rotation);
 		//time to die
 		Die();
 
