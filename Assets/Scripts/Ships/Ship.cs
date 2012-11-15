@@ -25,9 +25,8 @@ public class Ship : MonoBehaviour {
 		
 	/* SCRIPT REFERENCES */
 	
-	protected GameManagement mgmt;
-	//Note: Do I attach the weapon reference here, or in the subclasses?  I'm leaning towards the subclasses for now,
-	//but I can do it here if you want, let me know - bn
+	protected GameManagement mgmt;//GameManagement
+	protected Weapon weapon;//attached weapon
 	
 	/* GAMEOBJECTS */
 	
@@ -37,9 +36,15 @@ public class Ship : MonoBehaviour {
 	/* VARIABLES */
 	
 	//health
-	public float health=7.0f;//Question:  Shouldn't this be an int?  -bn
+	public int health=7;
 	
-	//powerup bools
+	//for use in Move();
+	protected float laneHeight;
+	protected float target;
+	protected bool laneChanging;
+	public int curLane; //this should be set in GameManagement upon instantiation.
+	
+	//powerup bools (both start as false)
 	private bool shielded = false;
 	private bool powerShot = false;
 
@@ -49,13 +54,18 @@ public class Ship : MonoBehaviour {
 	void Start () { 
 		//Source the Game Management
 		mgmt = Camera.main.GetComponent<GameManagement>();
+		//storing laneheight for future use
+		laneHeight = mgmt.GetLaneHeight();
+		laneChanging = false;
+		target = transform.position.y;
+		//Source the weapon? or is that part of the prefab?
 		
 		
 	}
 	
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		
 		Move();
 		
@@ -63,21 +73,48 @@ public class Ship : MonoBehaviour {
 	
 	
 	public void Move(){
-		//Input keys for changing of the lanes.  All should be pretty self-explanatory
-		if(Input.GetButtonDown("Up")){
-			transform.Translate(new Vector3(0,mgmt.GetLaneHeight(),0)*Time.deltaTime,Space.World);
+		
+		//Input keys for changing of the lanes.  
+		if(Input.GetButtonDown("Up") && !laneChanging){//if we want to move up, and we're not currently changing lanes
+			curLane--;
+			if(curLane < 1) { //if we need to wrap around top:
+				curLane = 7;//set to bottom lane
+				transform.position.y = transform.position.y - (6.0f * laneHeight);//port ship over there (6 lanes down)
+				target = transform.position.y;//and reset the target.
+			}else{//otherwise
+				target = transform.position.y + laneHeight();//we set our target
+				laneChanging = true;//and we lock out the up+down keys
+				while( transform.position.y <= target) {//for this while loop
+					transform.Translate(mgmt.GetGameSpeed()*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
+				}
+				laneChanging = false;//at the end we allow more key presses
+			}
 		}
-		if(Input.GetButtonDown("Down")){
-			transform.Translate(new Vector3(0,mgmt.GetLaneHeight(),0)*Time.deltaTime,Space.World);
+		
+		
+		if(Input.GetButtonDown("Down") && !laneChanging){
+			curLane++;
+			if(curLane > 7) {//if we need to wrap around bot:
+				curLane = 1; //set to top lane
+				transform.position.y = transform.position.y + (6.0f * laneHeight);//port ship over there (6 lanes up)
+				target = transform.position.y; //and reset the target.
+			}else{//otherwise
+				target = transform.position.y - laneHeight();//we set our target
+				laneChanging = true;//and we lock out the up+down keys
+				while( transform.position.y >= target) {//for this while loop
+					transform.Translate(mgmt.GetGameSpeed()*(-1.0f)*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
+				}
+			laneChanging = false;//at the end we allow more key presses
+			}
 		}
 		if(Input.GetButtonDown ("Right")){
 			if(transform.position.x < (Screen.width / 2)){//this doesn't allow the player to go beyond halfway across the screen.
-				transform.Translate(new Vector3(0,1,0)/**speed*/*Time.deltaTime,Space.World);	
+				transform.Translate(new Vector3(1,0,0)*Time.fixedDeltaTime);	
 			}
 		}
 		if(Input.GetButtonDown ("Left")){ 
 			if(transform.position.x > (Camera.main.WorldToScreenPoint(new Vector3(0,0)).x)) {//this doesn't allow the player to go off the left side.
-				transform.Translate(new Vector3(0,-1,0)/**speed*/*Time.deltaTime,Space.World);	
+				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.fixedDeltaTime);	
 			}
 		}
 		
@@ -101,8 +138,7 @@ public class Ship : MonoBehaviour {
 	//Method to render the shield
 	public void RenderShield(){
 		if(shielded) {
-			//Note:  I currently don't really know how to do this, because I have yet to implement Shield.
-			//I'm leaving this a skeleton for now, and will return to it later - bn
+			//Note:  I am a dumbass about these sorts of things - I have no clue how to implement the render :(
 		} else {
 			
 		}	
@@ -117,8 +153,23 @@ public class Ship : MonoBehaviour {
 		return health;
 	}
 	
+	public void OnTriggerEnter(Collider other) {
+		if(other.gameObject.getTag("Enemy")) {
+			TakeDamage(other.gameObject.damage);
+		}
+		if(other.gameObject.getTag("PowerUp")) {//otherwise, if we have a powerup,
+			if(other.gameObject.IsShield) { //if it's a shield
+				shielded = true;//turn on shield
+			}else{//otherwise, it has to be a powershot
+				weapon.GivePowerSHot();
+			}
+		}
+		
+		
+	}
+	//OBSOLETE, KEEPING FOR REFERENCE, CAN DELETE LATER - bn
 	//Sets powerups based on what is collected.
-	public void getItem(string itemTag) {
+	/*public void getItem(string itemTag) {
 		if(itemTag == "Shield") {
 			shielded = true;
 		}
@@ -126,7 +177,7 @@ public class Ship : MonoBehaviour {
 			powerShot = true;
 		}	
 	}
-	
+	*/
 	
 	
 	
@@ -135,8 +186,9 @@ public class Ship : MonoBehaviour {
 	public void Die(GameManagement mgmt) {
 	
 		Debug.Log("ship is out of healths.  Calling mgmt.PlayerDead()");
-		//FYI: Whoever's writing the cute comments needs to stop, it was cute for a while but now its annoying - bn
-		//mgmt.ShipDied(shipNo);
+		mgmt.ShipDied();//Lets the GM know a ship is dead(do we care anymore?)
+		Destroy(gameObject);//and destroys itself.
+		
 	}
 	
 }
