@@ -28,7 +28,7 @@ public class GameManagement : MonoBehaviour {
 		
 		laneHeight = screenHeight / (float) numLanes;
 		
-		Debug.Log("GameManagement: " + screenWidth);
+		Debug.Log("GameManagement calculated laneHeight: " + laneHeight + " world units");
 		
 		spawners = new GameObject[numLanes];
 		ships = new GameObject[numShips];
@@ -53,7 +53,7 @@ public class GameManagement : MonoBehaviour {
 		//Setup the ships
 		i = -1;
 		foreach(GameObject ship in ships) {
-			Debug.Log(shipPrefabs[i+1]);
+//			Debug.Log(shipPrefabs[i+1]);
 			ships[i+1] = Instantiate(shipPrefabs[i+1], new Vector3(shipSpawnOffset - screenWidth, (float)i * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
 			i++;
 		}
