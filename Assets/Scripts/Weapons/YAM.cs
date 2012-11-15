@@ -9,15 +9,11 @@ void Start () {
 }
 
 // Update is called once per frame
-	void Update () {
+	/*void Update () {
 		base.Update();
-	}
+	}*/
 
-	public void PowerShot(){
+	override public void PowerShot(){
 		//pass for now
 	}
 }
-
-
-}
-

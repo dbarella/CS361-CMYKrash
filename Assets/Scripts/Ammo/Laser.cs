@@ -12,3 +12,4 @@ public class Laser : Ammo {
 		//OnTriggerEnter is guarenteed to be called before this, so just die.
 		Die();
 	}
+}

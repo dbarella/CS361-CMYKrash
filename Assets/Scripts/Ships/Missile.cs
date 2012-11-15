@@ -10,7 +10,7 @@ public class Missile : Spawnable {
 	void Start () {
 		base.damage = 1;
 		base.health = 2;
-		base.speedMult = 2;
+		base.speedMult = 50;
 	}
 	
 	void FixedUpdate () {
