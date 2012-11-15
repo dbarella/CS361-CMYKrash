@@ -13,7 +13,8 @@ public abstract class Spawnable : MonoBehaviour {
 		laneChanging = false;
 	}
 	public void Move(){
-		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));
+		//error for planet, object not set to a reference of an object
+		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*Vector3.left);
 	}
 	public void ChangeLane(int i){
 		if(!laneChanging){ 
