@@ -65,19 +65,19 @@ public class Ship : MonoBehaviour {
 	public void Move(){
 		//Input keys for changing of the lanes.  All should be pretty self-explanatory
 		if(Input.GetButtonDown("Up")){
-			transform.Translate(new Vector3(0,mgmt.GetLaneWidth(),0)*Time.deltaTime,Space.World);
+			transform.Translate(new Vector3(0,mgmt.GetLaneHeight(),0)*Time.deltaTime,Space.World);
 		}
 		if(Input.GetButtonDown("Down")){
-			transform.Translate(new Vector3(0,mgmt.GetLaneWidth(),0)*Time.deltaTime,Space.World);
+			transform.Translate(new Vector3(0,mgmt.GetLaneHeight(),0)*Time.deltaTime,Space.World);
 		}
 		if(Input.GetButtonDown ("Right")){
 			if(transform.position.x < (Screen.width / 2)){//this doesn't allow the player to go beyond halfway across the screen.
-				transform.Translate(new Vector3(0,1,0)*speed*Time.deltaTime,Space.World);	
+				transform.Translate(new Vector3(0,1,0)/**speed*/*Time.deltaTime,Space.World);	
 			}
 		}
 		if(Input.GetButtonDown ("Left")){ 
 			if(transform.position.x > (Camera.main.WorldToScreenPoint(new Vector3(0,0)).x)) {//this doesn't allow the player to go off the left side.
-				transform.Translate(new Vector3(0,-1,0)*speed*Time.deltaTime,Space.World);	
+				transform.Translate(new Vector3(0,-1,0)/**speed*/*Time.deltaTime,Space.World);	
 			}
 		}
 		
@@ -118,7 +118,7 @@ public class Ship : MonoBehaviour {
 	}
 	
 	//Sets powerups based on what is collected.
-	public void getItem(String itemTag) {
+	public void getItem(string itemTag) {
 		if(itemTag == "Shield") {
 			shielded = true;
 		}
@@ -136,7 +136,7 @@ public class Ship : MonoBehaviour {
 	
 		Debug.Log("ship is out of healths.  Calling mgmt.PlayerDead()");
 		//FYI: Whoever's writing the cute comments needs to stop, it was cute for a while but now its annoying - bn
-		mgmt.PlayerDead(shipNo);
+		//mgmt.ShipDied(shipNo);
 	}
 	
 }
