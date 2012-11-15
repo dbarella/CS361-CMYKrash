@@ -42,6 +42,7 @@ public class Ship : MonoBehaviour {
 	protected float laneHeight;
 	protected float target;
 	protected bool laneChanging;
+	public int curLane; //this should be set in GameManagement upon instantiation.
 	
 	//powerup bools (both start as false)
 	private bool shielded = false;
@@ -75,22 +76,36 @@ public class Ship : MonoBehaviour {
 		
 		//Input keys for changing of the lanes.  
 		if(Input.GetButtonDown("Up") && !laneChanging){//if we want to move up, and we're not currently changing lanes
-			target = transform.position.y + laneHeight();//we set our target
-			laneChanging = true;//and we lock out the up+down keys
-			while( transform.position.y <= target) {//for this while loop
-				transform.Translate(mgmt.GetGameSpeed()*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
+			curLane--;
+			if(curLane < 1) { //if we need to wrap around top:
+				curLane = 7;//set to bottom lane
+				transform.position.y = transform.position.y - (6.0f * laneHeight);//port ship over there (6 lanes down)
+				target = transform.position.y;//and reset the target.
+			}else{//otherwise
+				target = transform.position.y + laneHeight();//we set our target
+				laneChanging = true;//and we lock out the up+down keys
+				while( transform.position.y <= target) {//for this while loop
+					transform.Translate(mgmt.GetGameSpeed()*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
+				}
+				laneChanging = false;//at the end we allow more key presses
 			}
-			laneChanging = false;//at the end we allow more key presses
 		}
 		
 		
 		if(Input.GetButtonDown("Down") && !laneChanging){
-			target = transform.position.y - laneHeight();//we set our target
-			laneChanging = true;//and we lock out the up+down keys
-			while( transform.position.y >= target) {//for this while loop
-				transform.Translate(mgmt.GetGameSpeed()*(-1.0f)*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
-			}
+			curLane++;
+			if(curLane > 7) {//if we need to wrap around bot:
+				curLane = 1; //set to top lane
+				transform.position.y = transform.position.y + (6.0f * laneHeight);//port ship over there (6 lanes up)
+				target = transform.position.y; //and reset the target.
+			}else{//otherwise
+				target = transform.position.y - laneHeight();//we set our target
+				laneChanging = true;//and we lock out the up+down keys
+				while( transform.position.y >= target) {//for this while loop
+					transform.Translate(mgmt.GetGameSpeed()*(-1.0f)*Time.fixedDeltaTime*new Vector3(0,1,0));//that does the moving!
+				}
 			laneChanging = false;//at the end we allow more key presses
+			}
 		}
 		if(Input.GetButtonDown ("Right")){
 			if(transform.position.x < (Screen.width / 2)){//this doesn't allow the player to go beyond halfway across the screen.
