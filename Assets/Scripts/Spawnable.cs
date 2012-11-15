@@ -14,7 +14,6 @@ public abstract class Spawnable : MonoBehaviour {
 		laneChanging = false;
 	}
 	public void Move(){
-		//error, object set to null reference of an object
 		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));
 	}
 	public void ChangeLane(int i){
