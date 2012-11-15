@@ -7,26 +7,32 @@ public abstract class Spawnable : MonoBehaviour {
 	protected float damage;
 	protected GameManagement gm;
 	protected bool laneChanging;
-	protected float target;
-	
+	protected float amtMoved;
+	protected float laneHeight;
+	protected int direction;
 	void Awake(){
 		gm = Camera.main.GetComponent<GameManagement>();
 		laneChanging = false;
+		laneHeight = gm.GetLaneHeight();
 	}
 	public void Move(){
 		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));
 	}
-	public void ChangeLane(int i){
-		float sign = (float) i;
-		
-		if(!laneChanging){ 
+	public void ChangeLane(int direction){
+		if(!laneChanging){
 			laneChanging = true;
-			target = transform.position.y + gm.GetLaneHeight() * sign;
+			amtMoved = 0;
+			this.direction = direction;
+			
 		}
-		else if(sign*transform.position.y >= sign*target){
+		else if(amtMoved >= laneHeight){
 			laneChanging = false;
 		}
-		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*sign*new Vector3(0,1,0));
+		else{
+			Vector3 translateVector = speedMult*direction*Time.fixedDeltaTime*new Vector3(0,1,0);
+			transform.Translate(translateVector);
+			amtMoved += translateVector.y;
+		}
 	}
 	public void TakeDamage(float damage){
 		health -= damage;
