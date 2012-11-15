@@ -12,6 +12,10 @@ public abstract class Spawnable : MonoBehaviour {
 	void Awake(){
 		gm = Camera.main.GetComponent<GameManagement>();
 		laneChanging = false;
+		Scale ();
+	}
+	
+	protected virtual void Scale(){	
 	}
 	public void Move(){
 		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));

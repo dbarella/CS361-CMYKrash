@@ -2,15 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public class Planet : Spawnable {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {
-		Move();
+		base.Move();
 	}
 	
 	void OnTriggerEnter(Collider col){
@@ -22,5 +17,11 @@ public class Planet : Spawnable {
 			temp = col.gameObject.GetComponent<Spawnable>().GetDamage();
 			TakeDamage(temp);
 		}
+	}
+	
+	protected override void Scale(){
+		float Moscow = gm.GetLaneHeight();
+		Vector3 targetScale = new Vector3(Moscow-.1f,Moscow-.1f,Moscow-.1f);
+		transform.localScale = targetScale;
 	}
 }
