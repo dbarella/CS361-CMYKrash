@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class Laser : Ammo {
+public class Laser : Ammo {
 
 	void Start(){
 		//On startup, immediately shift forward so the edge will be on the ship, rather than the laser being half forward and half backwards.
