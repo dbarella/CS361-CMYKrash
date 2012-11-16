@@ -9,6 +9,7 @@ public class Bomb : Ammo {
 		GameManagement gm = Camera.main.GetComponent<GameManagement>();
 		halfScreen = gm.GetScreenWidth()/2.0f;
 		initPosit = transform.position.x;
+		
 	}
 	
 	void Update () {

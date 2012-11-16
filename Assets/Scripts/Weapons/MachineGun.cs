@@ -8,11 +8,6 @@ public class MachineGun : Weapon {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		base.Update();
-	}
-	
 	override public void PowerShot(){
 		//pass for now
 	}

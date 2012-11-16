@@ -10,7 +10,7 @@ public class Planet : Spawnable {
 	
 	void OnTriggerEnter(Collider col){
 		float temp;
-		if(col is Ship){
+		if(col.tag == "Ship"){
 			Die ();
 		}
 		if(col is Spawnable){

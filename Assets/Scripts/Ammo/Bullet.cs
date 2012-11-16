@@ -2,11 +2,15 @@ using UnityEngine;
 using System.Collections;
 
 public class Bullet : Ammo {
+	
+	void Start(){
+		
+	}
+	
 	void OnTriggerEnter(Collider o){
-		//if not a powerup
-		//if(o.GetComponent<PowerUp> == null){
-			//do damage and destroy yourself
-			Die();
-		//}
+			if(!o.gameObject is PowerUp) {
+				Die();
+			}
+		
 	}
 }

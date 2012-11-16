@@ -6,6 +6,7 @@ public abstract class Weapon : MonoBehaviour {
 	public GameObject ammo;	//type of shot to instantiate
 	public float cdtime;	//min time between shots
 	private float cooldown;	//Internal counter for shot cooldown.
+	public string buttonPress;
 	
 	// Use this for initialization
 	void Start () {
@@ -14,8 +15,10 @@ public abstract class Weapon : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void Update () {
-		if(Input.GetButtonDown("Jump"))
+		if(Input.GetButtonDown(buttonPress) && cooldown <= 0) {
+			Debug.Log("Firing a Weapon: " + buttonPress);
 			StandardShot();
+		}
 		//Decriment cooldown;
 		if(cooldown > 0)
 			cooldown -= Time.deltaTime;

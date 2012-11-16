@@ -53,21 +53,22 @@ public class Ship : MonoBehaviour {
 		mgmt = Camera.main.GetComponent<GameManagement>();
 		//storing laneheight for future use
 		laneHeight = mgmt.GetLaneHeight();
+		
 		laneChanging = false;
 		//Source the weapon? or is that part of the prefab?	
 	}
 	
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-		
+	void Update () {
 		Move();
 		
 	}
 	
 	
 	public void Move(){
-		if(laneChanging) ChangeLanes (direction);
+		if(laneChanging)
+			ChangeLanes (direction);
 		//Input keys for changing of the lanes.  
 		else if(Input.GetKeyDown("w")){//if we want to move up, and we're not currently changing lanes
 			direction = 1;
@@ -79,13 +80,13 @@ public class Ship : MonoBehaviour {
 		}
 		if(Input.GetKey ("d")){
 			if(transform.position.x < (mgmt.GetScreenWidth() / 2)){//this doesn't allow the player to go beyond halfway across the screen.
-				transform.Translate(new Vector3(1,0,0)*Time.fixedDeltaTime*shipSpeed);	
+				transform.Translate(new Vector3(1,0,0)*Time.deltaTime*shipSpeed);	
 			}
 		}
 		if(Input.GetKey ("a")){ 
 			Debug.Log(Camera.main.WorldToScreenPoint(new Vector3(0,0,0)).x);
 			if(transform.position.x > (Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x)) {//this doesn't allow the player to go off the left side.
-				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.fixedDeltaTime*shipSpeed);	
+				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.deltaTime*shipSpeed);	
 			}
 		}
 		
@@ -93,6 +94,7 @@ public class Ship : MonoBehaviour {
 	
 	//helper method for changing lanes. direction is -1 or 1 depending on whether ship is going up or down.
 	private void ChangeLanes(int direction){
+		
 		print(laneChanging+" "+amtMoved);
 		if(!laneChanging){
 			laneChanging = true;
@@ -103,11 +105,18 @@ public class Ship : MonoBehaviour {
 			this.direction = 0;
 		}
 		else{
-			Vector3 translateVector = new Vector3(0,laneChangeMult*shipSpeed*(float)direction*Time.fixedDeltaTime,0);
+			Vector3 translateVector = new Vector3(0,laneChangeMult*shipSpeed*(float)direction*Time.deltaTime,0);
+			if(amtMoved + Mathf.Abs(translateVector.y) > laneHeight){
+				translateVector = (Vector3.up*(float)direction*(Mathf.Abs(laneHeight-amtMoved)));
+				laneChanging = false;
+				this.direction = 0;
+			}
 			transform.Translate(translateVector);
 			amtMoved += Mathf.Abs(translateVector.y);
 		}
 	}
+
+
 	
 	
 	public void TakeDamage(float damage){
