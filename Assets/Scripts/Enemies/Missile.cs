@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Missile : Spawnable {
 	public bool isRandom;
-	public float laneChangeTime = 2.0f;
+	public float laneChangeTime;
 	
 	private float _timer;
 	
@@ -16,9 +16,11 @@ public class Missile : Spawnable {
 	void FixedUpdate () {
 		Move();
 		_timer -= Time.deltaTime;
+		
 		if(laneChanging) ChangeLane(direction);
-		else if(_timer <= 0 && isRandom) {
+		else if(_timer <= 0f && isRandom) {
 			_timer = laneChangeTime; //Reset the timer
+			Debug.Log("Reset Timer");
 			ChangeLane( Random.Range(-1,2) ); //Generate a random into to change lanes
 		}
 	}

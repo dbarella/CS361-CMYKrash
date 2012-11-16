@@ -22,6 +22,7 @@ public abstract class Spawnable : MonoBehaviour {
 		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));
 	}
 	public void ChangeLane(int direction){
+		//Debug.Log("Changing lane: " + direction + "\nlaneChanging: " + laneChanging);
 		if(!laneChanging){
 			laneChanging = true;
 			amtMoved = 0;
@@ -32,7 +33,10 @@ public abstract class Spawnable : MonoBehaviour {
 			laneChanging = false;
 		}
 		else{
-			Vector3 translateVector = speedMult*direction*Time.fixedDeltaTime*new Vector3(0,1,0);
+			Vector3 translateVector = speedMult* (float)direction *Time.fixedDeltaTime*new Vector3(0,1,0);
+			
+//			Debug.Log(translateVector);
+			
 			transform.Translate(translateVector);
 			amtMoved += translateVector.y;
 		}

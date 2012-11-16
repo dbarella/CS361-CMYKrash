@@ -14,15 +14,10 @@ Move
 TODO:
 
 RenderShield
-
-
-
 */
 
 public class Ship : MonoBehaviour {
 	
-	
-		
 	/* SCRIPT REFERENCES */
 	
 	protected GameManagement mgmt;//GameManagement
@@ -38,7 +33,6 @@ public class Ship : MonoBehaviour {
 	//health
 	public float health=7.0f;
 	
-	
 	//for use in Move();
 	public float shipSpeed = 10.0f;
 	//how much faster lane changing goes than regular movement
@@ -47,13 +41,11 @@ public class Ship : MonoBehaviour {
 	protected float amtMoved;
 	protected bool laneChanging;
 	protected int direction;
-	public int curLane; //this should be set in GameManagement upon instantiation.
+	//public int curLane; //this should be set in GameManagement upon instantiation.
 	
 	//powerup bools (both start as false)
 	private bool shielded = false;
 	private bool powerShot = false;
-	
-	
 	
 	// Use this for initialization
 	void Start () { 
@@ -62,9 +54,7 @@ public class Ship : MonoBehaviour {
 		//storing laneheight for future use
 		laneHeight = mgmt.GetLaneHeight();
 		laneChanging = false;
-		//Source the weapon? or is that part of the prefab?
-		
-		
+		//Source the weapon? or is that part of the prefab?	
 	}
 	
 	
@@ -88,12 +78,13 @@ public class Ship : MonoBehaviour {
 			ChangeLanes(direction);
 		}
 		if(Input.GetKey ("d")){
-			if(transform.position.x < (Screen.width / 2)){//this doesn't allow the player to go beyond halfway across the screen.
+			if(transform.position.x < (mgmt.GetScreenWidth() / 2)){//this doesn't allow the player to go beyond halfway across the screen.
 				transform.Translate(new Vector3(1,0,0)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
 		if(Input.GetKey ("a")){ 
-			if(transform.position.x > (Camera.main.WorldToScreenPoint(new Vector3(0,0)).x)) {//this doesn't allow the player to go off the left side.
+			Debug.Log(Camera.main.WorldToScreenPoint(new Vector3(0,0,0)).x);
+			if(transform.position.x > (Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x)) {//this doesn't allow the player to go off the left side.
 				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
