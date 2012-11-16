@@ -14,35 +14,39 @@ public class Spawner : MonoBehaviour {
 	//These variables are used only when random spawning is in effect
 	public float randMinTime;
 	public float randMaxTime;
-	private float spawnTimer;
+	public float spawnTime;
+	private float timer;
 
 	/*
 	*Currently, there's no instantiation that needs to take place with this.
 	*/
 	void Start(){
+		timer = spawnTime;
+		randMinTime = spawnTime;
+		randMaxTime = spawnTime + 1;
 	}
 	/*Handles the spawning of enemies according to whatever paradigm we need
 	 *Right now we pretty much only have the random spawning, so that's what it does
 	 */
 	void Update(){
 		//If using random spawning and spawn timer is 0, spawn something
-		if(spawnTimer <=0 && isRandomSpawner){
+		if(timer <=0 && isRandomSpawner){
 			int randomObj = Random.Range(0, objects.Length);
 			SpawnObject (objects[randomObj]);
 			
 			//SpawnObject(prefabList[Random.Range(0, prefabList.Count -1)]);
-			spawnTimer = Random.Range(randMinTime, randMaxTime);
+			timer = Random.Range(randMinTime, randMaxTime);
 		}
-		if(!isRandomSpawner && spawnTimer <=0){
+		if(!isRandomSpawner && timer <=0){
 
 			int randomObj = Random.Range(0, objects.Length);
 			SpawnObject(objects[randomObj]);
-			spawnTimer = 5;
+			timer = spawnTime;
 		}
 
 		//Dercrement timer if > 0
-		if(spawnTimer > 0){
-			spawnTimer -= Time.deltaTime;
+		if(timer > 0){
+			timer -= Time.deltaTime;
 		}
 	}
 	/*Spawns the given object at the spawner's location, presumably to be sent down the lane.
