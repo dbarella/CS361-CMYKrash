@@ -16,7 +16,7 @@ public abstract class Weapon : MonoBehaviour {
 	// Update is called once per frame
 	public void Update () {
 		if(Input.GetButtonDown(buttonPress) && cooldown <= 0) {
-			Debug.Log("Firing a Weapon: " + buttonPress);
+//			Debug.Log("Firing a Weapon: " + buttonPress);
 			StandardShot();
 		}
 		//Decriment cooldown;

@@ -95,7 +95,7 @@ public class Ship : MonoBehaviour {
 	//helper method for changing lanes. direction is -1 or 1 depending on whether ship is going up or down.
 	private void ChangeLanes(int direction){
 		
-		print(laneChanging+" "+amtMoved);
+//		print(laneChanging+" "+amtMoved);
 		if(!laneChanging){
 			laneChanging = true;
 			amtMoved = 0;

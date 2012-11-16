@@ -16,6 +16,10 @@ public abstract class Spawnable : MonoBehaviour {
 		laneHeight = gm.GetLaneHeight();
 	}
 	
+	void Update() {
+		if(health<=0) Die();
+	}
+	
 	protected virtual void Scale(){	
 	}
 	public void Move(){
@@ -46,6 +50,7 @@ public abstract class Spawnable : MonoBehaviour {
 		}
 	}
 	public void TakeDamage(float damage){
+		Debug.Log("Taking damage " + damage);
 		health -= damage;
 	}
 	public float GetDamage(){

@@ -1,20 +1,24 @@
 using UnityEngine;
 using System.Collections;
 
-public class Planet : Spawnable {
+public class Planet : Enemy {
 	
-	// Update is called once per frame
-	//void Update () {
-	//	base.Move();
-	//}
+	void Update () {
+		base.Move();
+	}
+	
+	public void Start() {
+		speedMult = 10;	
+	}
 	
 	void OnTriggerEnter(Collider col){
 		float temp;
 		if(col.tag == "Ship"){
 			Die ();
 		}
-		if(col.tag == "Spawnable"){
-			temp = col.gameObject.GetComponent<Spawnable>().GetDamage();
+		if(col.tag == "Ammo"){
+			temp = col.gameObject.GetComponent<Ammo>().GetDamage();
+			Debug.Log(temp);
 			TakeDamage(temp);
 		}
 	}

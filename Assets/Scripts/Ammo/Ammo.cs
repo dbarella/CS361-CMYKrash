@@ -19,6 +19,10 @@ public abstract class Ammo : MonoBehaviour {
 		transform.Translate(speed*Vector3.right*Time.deltaTime);
 	}
 	
+	public float GetDamage() {
+		return damage;
+	}
+	
 	public void Die(){
 		Destroy(gameObject);
 	}
