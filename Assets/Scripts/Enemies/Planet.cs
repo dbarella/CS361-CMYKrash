@@ -4,16 +4,16 @@ using System.Collections;
 public class Planet : Spawnable {
 	
 	// Update is called once per frame
-	void Update () {
-		base.Move();
-	}
+	//void Update () {
+	//	base.Move();
+	//}
 	
 	void OnTriggerEnter(Collider col){
 		float temp;
 		if(col.tag == "Ship"){
 			Die ();
 		}
-		if(col is Spawnable){
+		if(col.tag == "Spawnable"){
 			temp = col.gameObject.GetComponent<Spawnable>().GetDamage();
 			TakeDamage(temp);
 		}

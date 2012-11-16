@@ -18,7 +18,7 @@ public class Missile : Spawnable {
 		_timer -= Time.deltaTime;
 		
 		if(laneChanging) ChangeLane(direction);
-		else if(_timer <= 0f && isRandom) {
+		if(_timer <= 0f && isRandom) {
 			_timer = laneChangeTime; //Reset the timer
 			Debug.Log("Reset Timer");
 			ChangeLane( Random.Range(-1,2) ); //Generate a random into to change lanes

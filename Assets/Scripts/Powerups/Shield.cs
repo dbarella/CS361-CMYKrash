@@ -9,7 +9,7 @@ public class Shield : PowerUp {
 	// Use this for initialization
 	void Start () {
 		gm = Camera.main.GetComponent<GameManagement>();
-		speedMult = 1.0f;
+		speedMult = 10.0f;
 		damage = 0.0f;
 		health = 1.0f;
 		laneChanging = false;
@@ -24,7 +24,7 @@ public class Shield : PowerUp {
 	
 	
 	void OnTriggerEnter(Collider other) {//collider to give powerup!
-		if(other.gameObject.CompareTag("Ship")) {//if collides with a ship
+		if(other.gameObject.CompareTag("Player")) {//if collides with a ship
 			//other.gameObject.getItem(this.gameObject.tag);//calls it's getItem, passing in Shield
 			this.Die();//and destroys itself (am i doing it right?)
 		} 	

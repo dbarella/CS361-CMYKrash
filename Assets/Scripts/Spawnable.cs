@@ -23,6 +23,7 @@ public abstract class Spawnable : MonoBehaviour {
 	}
 	public void ChangeLane(int direction){
 		//Debug.Log("Changing lane: " + direction + "\nlaneChanging: " + laneChanging);
+		if(direction==0) return;
 		if(!laneChanging){
 			laneChanging = true;
 			amtMoved = 0;
@@ -31,14 +32,17 @@ public abstract class Spawnable : MonoBehaviour {
 		}
 		else if(amtMoved >= laneHeight){
 			laneChanging = false;
+			this.direction = 0;
 		}
 		else{
-			Vector3 translateVector = speedMult* (float)direction *Time.fixedDeltaTime*new Vector3(0,1,0);
-			
-//			Debug.Log(translateVector);
-			
+			Vector3 translateVector = new Vector3(0,speedMult*(float)direction*Time.deltaTime,0);
+			if(amtMoved + Mathf.Abs(translateVector.y) > laneHeight){
+				translateVector = (direction*Vector3.up*(Mathf.Abs(laneHeight-amtMoved)));
+				laneChanging = false;
+				this.direction = 0;
+			}
 			transform.Translate(translateVector);
-			amtMoved += translateVector.y;
+			amtMoved += Mathf.Abs(translateVector.y);
 		}
 	}
 	public void TakeDamage(float damage){
