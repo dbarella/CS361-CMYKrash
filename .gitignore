@@ -3,6 +3,7 @@
 
 #Ignore OSX Application Builds
 *.app
+*.zip
 
 #Ignore Unity metadata
 *.pidb
