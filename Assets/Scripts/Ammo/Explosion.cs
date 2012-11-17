@@ -11,15 +11,17 @@ public class Explosion : Ammo {
 		GameManagement gm = Camera.main.GetComponent<GameManagement>();
 		float height = gm.GetLaneHeight();
 		//and set the radius of the collider to it
-		s.radius = height;
-
+		s.radius = height/(this.transform.localScale.x);
 		
 	}
 	//after colliders are done: death.
-	void Update(){
-		Die();
+	void FixedUpdate(){
+		Die ();
 	}
 	
+	void OnTriggerEnter(Collider col){
+		Debug.Log ("Explosion hit: "+col.gameObject.tag);
+	}
 	
 	
 }

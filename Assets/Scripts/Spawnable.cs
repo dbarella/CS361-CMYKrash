@@ -2,27 +2,24 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class Spawnable : MonoBehaviour {
-	protected float speedMult;
-	protected float health;
-	protected float damage;
-	protected GameManagement gm;
-	protected bool laneChanging;
-	protected float amtMoved;
-	protected float laneHeight;
-	protected int direction;
+	public float speedMult;
+	public float health;
+	public float damage;
+	public GameManagement gm;
+	public bool laneChanging;
+	public float amtMoved;
+	public float laneHeight;
+	public int direction;
 	void Awake(){
 		gm = Camera.main.GetComponent<GameManagement>();
 		laneChanging = false;
 		laneHeight = gm.GetLaneHeight();
 	}
 	
-	void Update() {
-		if(health<=0) Die();
-	}
-	
 	protected virtual void Scale(){	
 	}
 	public void Move(){
+		Debug.Log (this.gameObject.tag + " moving with a speedMult of " + speedMult);
 		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));
 	}
 	public void ChangeLane(int direction){
@@ -34,12 +31,12 @@ public abstract class Spawnable : MonoBehaviour {
 			this.direction = direction;
 			
 		}
-		else if(amtMoved >= laneHeight){
-			laneChanging = false;
-			this.direction = 0;
-		}
+		//else if(amtMoved >= laneHeight){
+		//	laneChanging = false;
+		//	this.direction = 0;
+		//}
 		else{
-			Vector3 translateVector = new Vector3(0,speedMult*(float)direction*Time.deltaTime,0);
+			Vector3 translateVector = new Vector3(0,speedMult*(float)direction*Time.fixedDeltaTime,0);
 			if(amtMoved + Mathf.Abs(translateVector.y) > laneHeight){
 				translateVector = (direction*Vector3.up*(Mathf.Abs(laneHeight-amtMoved)));
 				laneChanging = false;
@@ -50,7 +47,6 @@ public abstract class Spawnable : MonoBehaviour {
 		}
 	}
 	public void TakeDamage(float damage){
-		Debug.Log("Taking damage " + damage);
 		health -= damage;
 	}
 	public float GetDamage(){

@@ -22,8 +22,11 @@ public class Bomb : Ammo {
 			Explode();
 		}
 	}
-	void OnCollisionEnter(Collision other){
-		Explode();
+	void OnTriggerEnter(Collider other){
+		Debug.Log ("Bomb collided with " + other.tag);
+		if(other.gameObject.tag == "Enemy"){
+			Explode();
+		}
 	}
 	private void Explode(){
 		//get all spawnables
@@ -35,7 +38,8 @@ public class Bomb : Ammo {
 				s.TakeDamage(damage);
 			}
 		}*/
-		Instantiate(explosionPrefab, transform.position, transform.rotation);
+		explosionPrefab = Instantiate(explosionPrefab, transform.position, transform.rotation) as GameObject;
+		StartCoroutine(Wait());
 		//time to die
 		Die();
 
@@ -44,4 +48,8 @@ public class Bomb : Ammo {
 	private float Distance(Vector3 other){
 		return Mathf.Sqrt(Mathf.Pow(other.x-transform.position.x,2)+Mathf.Pow(other.y - transform.position.y,2));
 	}
+	IEnumerator Wait(){
+		yield return new WaitForSeconds(3);
+	}
 }
+

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 //Last modified by: Brendan, Thursday 11/8 @ 7 PM
 
 public class Spawner : MonoBehaviour {
-	//public List<GameObject> prefabList;	//List of all prefabs, for random spawning. I'm pretty sure this can be filled via inspector
 
 	//These specific prefabs are unused right now, as everything is randomized.
 	public GameObject[] objects;

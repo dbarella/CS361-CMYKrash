@@ -3,29 +3,35 @@ using System.Collections;
 
 public class Planet : Enemy {
 	
-	void Update () {
+	private float _scaleFactor = 0.1f;
+	
+	public void Start() {
+		//speedMult = 10;	
+	}
+	
+	void FixedUpdate () {
 		base.Move();
 	}
 	
-	public void Start() {
-		speedMult = 10;	
-	}
-	
-	void OnTriggerEnter(Collider col){
+/*	void OnTriggerEnter(Collider col){
 		float temp;
-		if(col.tag == "Ship"){
-			Die ();
+		if(col.tag == "Player"){
+			Destroy(gameObject);
 		}
 		if(col.tag == "Ammo"){
 			temp = col.gameObject.GetComponent<Ammo>().GetDamage();
-			Debug.Log(temp);
 			TakeDamage(temp);
+			if(health<=0){
+				Destroy(gameObject);
+			}
 		}
-	}
+	}*/
 	
 	protected override void Scale(){
-		float Moscow = gm.GetLaneHeight();
-		Vector3 targetScale = new Vector3(Moscow-.1f,Moscow-.1f,Moscow-.1f);
+		float laneHeight = gm.GetLaneHeight();
+		Vector3 targetScale = new Vector3(laneHeight - _scaleFactor, laneHeight - _scaleFactor, laneHeight - _scaleFactor);
 		transform.localScale = targetScale;
 	}
+	
+	
 }

@@ -62,7 +62,7 @@ public class Ship : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Move();
-		
+		RenderShield ();
 	}
 	
 	
@@ -84,7 +84,6 @@ public class Ship : MonoBehaviour {
 			}
 		}
 		if(Input.GetKey ("a")){ 
-			Debug.Log(Camera.main.WorldToScreenPoint(new Vector3(0,0,0)).x);
 			if(transform.position.x > (Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x)) {//this doesn't allow the player to go off the left side.
 				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.deltaTime*shipSpeed);	
 			}
@@ -134,9 +133,9 @@ public class Ship : MonoBehaviour {
 	//Method to render the shield
 	public void RenderShield(){
 		if(shielded) {
-			//Note:  I am a dumbass about these sorts of things - I have no clue how to implement the render :(
+			transform.Find("Shield").GetComponent<MeshRenderer>().enabled = true;
 		} else {
-			
+			transform.Find("Shield").GetComponent<MeshRenderer>().enabled = false;
 		}	
 	}
 	
@@ -154,7 +153,9 @@ public class Ship : MonoBehaviour {
 			TakeDamage(other.gameObject.GetComponent<Spawnable>().GetDamage());
 		}
 		if(other.gameObject.CompareTag("PowerUp")) {//otherwise, if we have a powerup,
+			Debug.Log ("Powerup");
 			if(other.gameObject.GetComponent<PowerUp>().IsShield()) { //if it's a shield
+				Debug.Log ("shielded");
 				shielded = true;//turn on shield
 			}else{//otherwise, it has to be a powershot
 				weapon.PowerShot();

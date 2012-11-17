@@ -25,8 +25,7 @@ public class Shield : PowerUp {
 	
 	void OnTriggerEnter(Collider other) {//collider to give powerup!
 		if(other.gameObject.CompareTag("Player")) {//if collides with a ship
-			//other.gameObject.getItem(this.gameObject.tag);//calls it's getItem, passing in Shield
-			this.Die();//and destroys itself (am i doing it right?)
+			this.Die(); //Destroy self
 		} 	
 	}
 	

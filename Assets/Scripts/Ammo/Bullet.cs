@@ -8,7 +8,7 @@ public class Bullet : Ammo {
 	}
 	
 	void OnTriggerEnter(Collider o){
-			if(!o.gameObject is PowerUp) {
+			if(o.gameObject.CompareTag("Enemy")) {
 				Die();
 			}
 		
