@@ -18,6 +18,7 @@ public class GameManagement : MonoBehaviour {
 	
 	private GameObject[] spawners;
 	private GameObject[] ships;
+	private GameObject[] spawnableObjects;
 	
 	// Use this for initialization
 	void Awake () {
@@ -75,5 +76,8 @@ public class GameManagement : MonoBehaviour {
 	}
 	public float GetGameSpeed() {
 		return gameSpeed;
+	}
+	public GameObject[] GetObjectArray() {
+		return spawnableObjects;
 	}
 }
