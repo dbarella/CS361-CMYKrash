@@ -12,10 +12,10 @@ public class Bomb : Ammo {
 		
 	}
 	
-	void Update () {
+	void FixedUpdate () {
 		//if not to middle of screen, move to the right
 		if(transform.position.x < halfScreen + initPosit) //Check this logic
-			transform.Translate(speed*Vector3.right*Time.deltaTime);
+			transform.Translate(speed*Vector3.right*Time.fixedDeltaTime);
 		//otherwise, kaboom
 		else{
 			//Debug.Log("Bomb" + halfScreen);

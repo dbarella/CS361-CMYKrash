@@ -4,18 +4,6 @@ using System.Collections.Generic;
 
 //Last modified by: Brendan, Monday 11/11 @ 3 AM
 
-/*
-Finished:
-GetItem
-TakeDamage
-Die
-Move
-
-TODO:
-
-RenderShield
-*/
-
 public class Ship : MonoBehaviour {
 	
 	/* SCRIPT REFERENCES */
@@ -58,10 +46,12 @@ public class Ship : MonoBehaviour {
 		//Source the weapon? or is that part of the prefab?	
 	}
 	
+	void FixedUpdate(){
+		Move();	
+	}
 	
 	// Update is called once per frame
 	void Update () {
-		Move();
 		RenderShield ();
 	}
 	
@@ -80,12 +70,12 @@ public class Ship : MonoBehaviour {
 		}
 		if(Input.GetKey ("d")){
 			if(transform.position.x < (mgmt.GetScreenWidth() / 2)){//this doesn't allow the player to go beyond halfway across the screen.
-				transform.Translate(new Vector3(1,0,0)*Time.deltaTime*shipSpeed);	
+				transform.Translate(new Vector3(1,0,0)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
 		if(Input.GetKey ("a")){ 
 			if(transform.position.x > (Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x)) {//this doesn't allow the player to go off the left side.
-				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.deltaTime*shipSpeed);	
+				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
 		
@@ -104,7 +94,7 @@ public class Ship : MonoBehaviour {
 			this.direction = 0;
 		}
 		else{
-			Vector3 translateVector = new Vector3(0,laneChangeMult*shipSpeed*(float)direction*Time.deltaTime,0);
+			Vector3 translateVector = new Vector3(0,laneChangeMult*shipSpeed*(float)direction*Time.fixedDeltaTime,0);
 			if(amtMoved + Mathf.Abs(translateVector.y) > laneHeight){
 				translateVector = (Vector3.up*(float)direction*(Mathf.Abs(laneHeight-amtMoved)));
 				laneChanging = false;

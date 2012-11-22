@@ -10,13 +10,13 @@ public abstract class Ammo : MonoBehaviour {
 	
 	}
 	
-	void Update () {
+	void FixedUpdate () {
 		Move();
 	}
 	
 	public void Move() {
 		//Move forward constantly at speed rate.
-		transform.Translate(speed*Vector3.right*Time.deltaTime);
+		transform.Translate(speed*Vector3.right*Time.fixedDeltaTime);
 	}
 	
 	public float GetDamage() {

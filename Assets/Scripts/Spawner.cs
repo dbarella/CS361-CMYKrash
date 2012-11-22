@@ -6,10 +6,12 @@ using System.Collections.Generic;
 
 public class Spawner : MonoBehaviour {
 
-	//These specific prefabs are unused right now, as everything is randomized.
-	public GameObject[] objects;
+	//These variables hold information about what the spawner will spawn
+	public GameObject[] objArr;
 	public bool isRandomSpawner;
-
+	int[] tickArray;	//The list to iterate through when not randomized
+	private int ticker = 0;	//The interal value determining where in the ticker this is.
+	
 	//These variables are used only when random spawning is in effect
 	public float randMinTime;
 	public float randMaxTime;
@@ -20,6 +22,7 @@ public class Spawner : MonoBehaviour {
 	*Currently, there's no instantiation that needs to take place with this.
 	*/
 	void Start(){
+		objArr = Camera.main.GetComponent<GameManagement>().GetObjectArray();
 		timer = spawnTime;
 		randMinTime = spawnTime;
 		randMaxTime = spawnTime + 1;
@@ -30,16 +33,15 @@ public class Spawner : MonoBehaviour {
 	void Update(){
 		//If using random spawning and spawn timer is 0, spawn something
 		if(timer <=0 && isRandomSpawner){
-			int randomObj = Random.Range(0, objects.Length);
-			SpawnObject (objects[randomObj]);
+			int randomObj = Random.Range(0, objArr.Length);
+			SpawnObject (objArr[randomObj]);
 			
 			//SpawnObject(prefabList[Random.Range(0, prefabList.Count -1)]);
 			timer = Random.Range(randMinTime, randMaxTime);
 		}
+		//If we're not a random spawner, iterate throught the ticker.
 		if(!isRandomSpawner && timer <=0){
-
-			int randomObj = Random.Range(0, objects.Length);
-			SpawnObject(objects[randomObj]);
+			SpawnObject(objArr[(tickArray[ticker++])]);
 			timer = spawnTime;
 		}
 
@@ -55,5 +57,12 @@ public class Spawner : MonoBehaviour {
 	//Instantiate the chosen object at the spawner's position and direction.
 	return (GameObject)Instantiate(o, transform.position, transform.rotation);
 	}
-
+	
+	public void setTickArray(int[] arr){
+		tickArray = arr;
+	}
+	
+	public int[] getTickArray(){
+		return tickArray;
+	}
 }

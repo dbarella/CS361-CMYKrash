@@ -14,7 +14,7 @@ public class Missile : Enemy {
 	void FixedUpdate () {
 		base.Move();
 		if(!laneChanging)
-			_timer -= Time.deltaTime;
+			_timer -= Time.fixedDeltaTime;
 		
 		if(laneChanging) ChangeLane(direction);
 		if(_timer <= 0f && isRandom) {
