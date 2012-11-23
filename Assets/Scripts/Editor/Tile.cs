@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour {
 	Material[] ml;
 	// Use this for initialization
 	void Start () {
-//		ml = Camera.main.GetComponent<EditorManagement>().GetMaterialList();
+		ml = Camera.main.GetComponent<EditorManagement>().GetMaterialList();
 	}
 	
 	// Update is called once per frame

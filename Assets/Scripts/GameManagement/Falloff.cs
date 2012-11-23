@@ -11,7 +11,10 @@ public class Falloff : MonoBehaviour{
 	}
 
 	void Update(){
-		if(renderer.bounds.max.x < leftbound || renderer.bounds.min.x > rightbound)
-		Destroy(gameObject);
+		if(gameObject.renderer) {
+			if(renderer.bounds.max.x < leftbound || renderer.bounds.min.x > rightbound) {
+				Destroy(gameObject);
+			}
+		}
 	}
 }
