@@ -27,18 +27,16 @@ public class EditorCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftBound,rightBound), 0, 0);
-		if(Input.GetKey (KeyCode.A)){
-			transform.Translate(Vector3.left*scrollSpeed*Time.deltaTime);
-		}
-		if(Input.GetKey (KeyCode.D)){
-			transform.Translate(Vector3.right*scrollSpeed*Time.deltaTime);
-		}
+//		transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftBound,rightBound), 0, 0);
+		transform.Translate(scrollSpeed*Vector3.right*Input.GetAxis("Horizontal")*Time.deltaTime);
+		transform.Translate(scrollSpeed*Vector3.up*Input.GetAxis("Vertical")*Time.deltaTime);
 	}
 	
     void OnGUI() {
         
 		float dist = ((Screen.width)*0.9f)/buttons.Length;
+		
+		Debug.Log(dist);
 		
 		//makes item buttons
 		for(int j = 0; j<buttons.Length;j++){

@@ -14,6 +14,9 @@ public class EditorManagement : MonoBehaviour {
 	private int rows, cols;	
 	private Tile[,] board;
 	public Material[] materialList;
+	
+	private float tileOffset = 1.0f;
+	
 	// Use this for initialization
 	void Start () {
 		//screen
@@ -27,6 +30,7 @@ public class EditorManagement : MonoBehaviour {
 		cols = 30;
 		board = new Tile[rows,cols];
 		tileHeight = screenHeight / rows;
+		Debug.Log("tile height: "+tileHeight);
 		//init tile
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
@@ -62,14 +66,13 @@ public class EditorManagement : MonoBehaviour {
 	//make a new tile
 	private void InitTile(int i, int j, Tile[,] board){
 		
-		Vector3 position = camera.ScreenToWorldPoint(new Vector3(j*tileHeight+tileHeight/2, i*tileHeight+tileHeight/2, 0));
-		position.z = 0;
-		GameObject go = Instantiate(tilePrefab,position, transform.rotation) as GameObject;
+		Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(j*tileHeight+tileHeight/2.0f, i*tileHeight+tileHeight/2.0f, 0));
+		position.z = tileOffset;
+		GameObject go = Instantiate(tilePrefab, position, tilePrefab.transform.rotation) as GameObject;
 		board[i,j] = go.GetComponent<Tile>();
 		//for some reason all of the Tiles are instantiating at the same pos. I will not attempt to debug as I am exhausted -js
-		Debug.Log (position);
-		Debug.Log(tileHeight);
-		go.transform.localScale = new Vector3 (tileHeight/2*0.6f, tileHeight/2*0.6f, 0);
+		Debug.Log ("InitTile ("+i+","+j+"): Posit: "+ position + ". TileHeight: " + tileHeight);
+		//go.transform.localScale = new Vector3 ((tileHeight/2.0f)*0.9f, 1, (tileHeight/2.0f)*0.9f);
 	}
 	
 	void FixedUpdate () {
