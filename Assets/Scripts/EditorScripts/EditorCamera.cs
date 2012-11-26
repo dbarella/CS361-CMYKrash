@@ -53,7 +53,7 @@ public class EditorCamera : MonoBehaviour {
 			em.Load();
 		}
 		if(GUI.Button (new Rect(Screen.width*0.85f,Screen.height-Screen.height/8.0f,Screen.height*0.1f,Screen.height*0.1f),PSL[2])){
-			em.Save ();
+			em.Save();
 		}
         
     }
