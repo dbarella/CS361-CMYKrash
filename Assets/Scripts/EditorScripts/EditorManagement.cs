@@ -125,7 +125,7 @@ public class EditorManagement : MonoBehaviour {
 		Debug.Log("Play");
 	}
 	public void Load(string fname) {
-		fname = "Assets/Maps" + fname + ".txt";
+		fname = "Assets/Maps/" + fname + ".txt";
 
 		if (!File.Exists(fname))
         {
@@ -156,7 +156,7 @@ public class EditorManagement : MonoBehaviour {
 	}
 	public void Save(string fname) {
 		Debug.Log("Saving...");
-		using (StreamWriter sw = new StreamWriter("Assets/Maps" + fname + ".txt"))
+		using (StreamWriter sw = new StreamWriter("Assets/Maps/" + fname + ".txt"))
 		{
 			string[] strings = MixDown();
 			sw.WriteLine(rows);
