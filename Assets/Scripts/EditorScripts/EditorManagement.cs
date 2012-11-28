@@ -83,8 +83,9 @@ public class EditorManagement : MonoBehaviour {
 	//make a new tile
 	private void InitTile(int i, int j, Tile[,] board){
 		
-		Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(j*tileHeight+tileHeight/2.0f, i*tileHeight+tileHeight/2.0f+0.15f*screenHeight, 0));
+		Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(j*tileHeight+tileHeight/2.0f, (rows-i)*tileHeight-tileHeight/2.0f+0.15f*screenHeight, 0));
 		position.z = tileOffset;
+		Debug.Log (rows+" "+i);
 		GameObject go = Instantiate(tilePrefab, position, tilePrefab.transform.rotation) as GameObject;
 		board[i,j] = go.GetComponent<Tile>();
 		//for some reason all of the Tiles are instantiating at the same pos. I will not attempt to debug as I am exhausted -js
