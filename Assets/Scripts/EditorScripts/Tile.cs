@@ -14,9 +14,11 @@ public class Tile : MonoBehaviour {
 	
 	}
 	public void SetMaterial(Material[] m){
+		Debug.Log(m);
 		ml = m;
 	}
 	public void SetObj(int i){
+		
 		obj = i;
 		gameObject.renderer.material = ml[i];
 	}
