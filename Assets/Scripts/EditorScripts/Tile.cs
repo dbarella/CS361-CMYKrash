@@ -7,14 +7,15 @@ public class Tile : MonoBehaviour {
 	Material[] ml;
 	// Use this for initialization
 	void Start () {
-		ml = Camera.main.GetComponent<EditorManagement>().GetMaterialList();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-	
+	public void SetMaterial(Material[] m){
+		ml = m;
+	}
 	public void SetObj(int i){
 		obj = i;
 		gameObject.renderer.material = ml[i];
@@ -22,5 +23,9 @@ public class Tile : MonoBehaviour {
 	
 	public int GetObj(){
 		return obj;	
+	}
+
+	public void Die(){
+		Destroy (gameObject);
 	}
 }

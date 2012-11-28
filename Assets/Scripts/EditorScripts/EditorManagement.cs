@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System;
+using System.IO;
 
 public class EditorManagement : MonoBehaviour {
 	//set to appropriate prefabs
@@ -23,14 +25,27 @@ public class EditorManagement : MonoBehaviour {
 		//Vector3 hnw = camera.ScreenToWorldPoint(new Vector3(Screen.width,Screen.height,camera.nearClipPlane));
 		
 		screenHeight = Screen.height;
-		screenWidth = Screen.width;
+		Setup ();
+		MaterialSetup();
+		
+	}
+	private void MaterialSetup(){
+		Texture2D[] textures = Camera.mainCamera.GetComponent<EditorCamera>().GetTextures();
+		materialList = new Material[textures.Length];
+		for(int i = 0; i < textures.Length; i++){
+			materialList[i] = new Material(Shader.Find("Diffuse"));
+			materialList[i].mainTexture= textures[i];
+		}
+	}
+	//sets up a blank board
+	private void Setup(){
 		//initial board
 		currentState = 0;
 		rows = 7;
 		cols = 30;
 		board = new Tile[rows,cols];
-		tileHeight = screenHeight / rows;
-		Debug.Log("tile height: "+tileHeight);
+		tileHeight = screenHeight / rows*0.85f;
+		//Debug.Log("tile height: "+tileHeight);
 		//init tile
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
@@ -38,23 +53,26 @@ public class EditorManagement : MonoBehaviour {
 			}
 		}
 	}
-	
+	private void Setup(int width, int height, int[,] data){
+		ResizeBoard (width,height);
+		for(int i = 0; i < width; i++){
+			for(int j = 0; j<height; j++){
+				Debug.Log ("Setup tile: data[i,j]");
+				board[i,j].SetObj(data[i,j]);
+			}
+		}
+	}
 	public void ResizeBoard(int x, int y){
-		tileHeight = screenHeight / x;
+		tileHeight = screenHeight / x*0.85f;
 		Tile[,] newBoard = new Tile[x,y];
 		for(int i = 0; i < x; i++){
 			for(int j = 0; j < y; j++){				
-				//if it exists
+				
+				InitTile(i,j,newBoard);
 				if(i < rows && j < cols){ 
-					//copy
-					newBoard[i,j] = board[i,j];
-					//but move it to the new position
-					newBoard[i,j].gameObject.transform.Translate(new Vector3(i*tileHeight, j*tileHeight, 0));
+					newBoard[i,j].SetObj(board[i,j].GetObj());
 				}
-				//otherwise make a new one
-				else{
-					InitTile(i,j,newBoard);
-				}
+				board[i,j].Die();
 			}
 		}
 		//this is the new board
@@ -66,13 +84,14 @@ public class EditorManagement : MonoBehaviour {
 	//make a new tile
 	private void InitTile(int i, int j, Tile[,] board){
 		
-		Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(j*tileHeight+tileHeight/2.0f, i*tileHeight+tileHeight/2.0f, 0));
+		Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(j*tileHeight+tileHeight/2.0f, i*tileHeight+tileHeight/2.0f+0.15f*screenHeight, 0));
 		position.z = tileOffset;
 		GameObject go = Instantiate(tilePrefab, position, tilePrefab.transform.rotation) as GameObject;
 		board[i,j] = go.GetComponent<Tile>();
 		//for some reason all of the Tiles are instantiating at the same pos. I will not attempt to debug as I am exhausted -js
-		Debug.Log ("InitTile ("+i+","+j+"): Posit: "+ position + ". TileHeight: " + tileHeight);
-		//go.transform.localScale = new Vector3 ((tileHeight/2.0f)*0.9f, 1, (tileHeight/2.0f)*0.9f);
+		//Debug.Log ("InitTile ("+i+","+j+"): Posit: "+ position + ". TileHeight: " + tileHeight);
+		go.transform.localScale = new Vector3 (2.5f,2.5f,2.5f);
+		board[i,j].SetMaterial(materialList);
 	}
 	
 	void FixedUpdate () {
@@ -81,7 +100,7 @@ public class EditorManagement : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit)){
-				Debug.Log ("clicked");
+				//Debug.Log ("clicked");
 				Tile t = hit.collider.gameObject.GetComponent<Tile>();
 				if(t != null)
 					t.SetObj(currentState);
@@ -90,32 +109,82 @@ public class EditorManagement : MonoBehaviour {
 		}
 	}
 	//getters and setters
-	public void SetState(int newState){
+	public void SetState(int newState) {
 		currentState = newState;
 	}
-	public int GetState(){
+	public int GetState() {
 		return currentState;
 	}
-	public Material[] GetMaterialList(){
+	public Material[] GetMaterialList() {
 		return materialList;
 	}
-	//need to do these
-	public void Play(){
+	public void SetTile(Tile t, int currentState) {
+		t.SetObj(currentState);
+	}
+	//need to do this
+	public void Play() {
 		Debug.Log("Play");
 	}
-	public void Load(){
-		Debug.Log("Load");
+	public void Load(string fname) {
+		fname = "Assets/Maps" + fname + ".txt";
 
+		if (!File.Exists(fname))
+        {
+			Debug.Log ("File "+fname+" not found");
+		}
+		else{
+			Debug.Log ("Loading...");
+			 using (StreamReader sr = File.OpenText(fname))
+        	{
+				int width = Convert.ToInt32(sr.ReadLine());
+            	int height = Convert.ToInt32(sr.ReadLine ());
+				
+				int[,] board = LoadBoard (sr, width,height);
+				Setup (width,height,board);
+        	}
+		}
 	}
-	public void Save(){
-		Debug.Log("Save");
-
+	private int[,] LoadBoard(StreamReader sr, int width, int height){
+		int[,] board = new int[width,height];
+            	for(int i = 0; i < width; i ++){
+					string s = sr.ReadLine();
+					string[] line = s.Split(new Char[]{' '});
+					for(int j = 0; j < height; j++){
+						board[i,j] = Convert.ToInt32(line[j]);
+					}
+				}
+		return board;
+	}
+	public void Save(string fname) {
+		Debug.Log("Saving...");
+		using (StreamWriter sw = new StreamWriter("Assets/Maps" + fname + ".txt"))
+		{
+			string[] strings = MixDown();
+			sw.WriteLine(rows);
+			sw.WriteLine(cols);
+			foreach (string s in strings){
+					sw.WriteLine(s);
+			}
+		}
+		Debug.Log("Save Complete.");
 	}
 	
-	public int GetRows(){
+	public int GetRows() {
 		return rows;
 	}
-	 public float GetTileHeight(){
+	 public float GetTileHeight() {
 		return tileHeight;
+	}
+	
+	public string[] MixDown() {
+		string[] s = new string[rows];
+		for(int i = 0; i < rows; i++) {
+			string temp = "";
+			for(int j = 0; j < cols; j++) {
+				temp = temp + board[i,j].GetObj()+" ";
+			}
+			s[i] = temp;
+		}
+		return s;
 	}
 }
