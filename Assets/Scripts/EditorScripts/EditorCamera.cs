@@ -36,7 +36,7 @@ public class EditorCamera : MonoBehaviour {
         
 		float dist = ((Screen.width)*0.9f)/buttons.Length;
 		
-		Debug.Log(dist);
+		//Debug.Log(dist);
 		
 		//makes item buttons
 		for(int j = 0; j<buttons.Length;j++){
@@ -50,12 +50,15 @@ public class EditorCamera : MonoBehaviour {
 			em.Play();
 		}
 		if(GUI.Button (new Rect(Screen.width*0.90f,Screen.height-Screen.height/8.0f,Screen.height*0.1f,Screen.height*0.1f),PSL[1])){
-			em.Load();
+			em.Load("level");
 		}
 		if(GUI.Button (new Rect(Screen.width*0.85f,Screen.height-Screen.height/8.0f,Screen.height*0.1f,Screen.height*0.1f),PSL[2])){
-			em.Save();
+			em.Save("level"); //THIS WILL NEED TO BE CHANGED TO ALLOW FOR MORE THAN 1 LEVEL
 		}
         
     }
+	public Texture2D[] GetTextures(){
+		return buttons;
+	}
 	
 }
