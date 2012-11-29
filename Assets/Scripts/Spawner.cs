@@ -24,8 +24,8 @@ public class Spawner : MonoBehaviour {
 	void Start(){
 		objArr = Camera.main.GetComponent<GameManagement>().GetObjectArray();
 		timer = spawnTime;
-		randMinTime = spawnTime;
-		randMaxTime = spawnTime + 1;
+		//randMinTime = spawnTime;
+		//randMaxTime = spawnTime + 1;
 	}
 	/*Handles the spawning of enemies according to whatever paradigm we need
 	 *Right now we pretty much only have the random spawning, so that's what it does
