@@ -53,6 +53,7 @@ public class Ship : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		RenderShield ();
+		RenderPoweredUp();
 	}
 	
 	
@@ -121,12 +122,20 @@ public class Ship : MonoBehaviour {
 	}
 	
 	//Method to render the shield
-	public void RenderShield(){
+	public void RenderShield() {
 		if(shielded) {
 			transform.Find("Shield").GetComponent<MeshRenderer>().enabled = true;
 		} else {
 			transform.Find("Shield").GetComponent<MeshRenderer>().enabled = false;
 		}	
+	}
+	
+	public void RenderPoweredUp() {
+		if(this.GetComponent<Weapon>().isPowerShot) {
+			transform.Find("PoweredUp").GetComponent<MeshRenderer>().enabled = true;
+		} else {
+			transform.Find("PoweredUp").GetComponent<MeshRenderer>().enabled = false;	
+		}
 	}
 	
 
@@ -148,7 +157,8 @@ public class Ship : MonoBehaviour {
 				Debug.Log ("shielded");
 				shielded = true;//turn on shield
 			}else{//otherwise, it has to be a powershot
-				weapon.PowerShot();
+				Debug.Log("SUPERSAIYAN");
+				this.GetComponent<Weapon>().SetPowerShot();
 			}
 		}
 		

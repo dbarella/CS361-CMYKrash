@@ -5,8 +5,9 @@ public abstract class Weapon : MonoBehaviour {
 	
 	public GameObject ammo;	//type of shot to instantiate
 	public float cdtime;	//min time between shots
-	private float cooldown;	//Internal counter for shot cooldown.
+	protected float cooldown;	//Internal counter for shot cooldown.
 	public string buttonPress;
+	public bool isPowerShot = false;
 	
 	// Use this for initialization
 	void Start () {
@@ -28,6 +29,10 @@ public abstract class Weapon : MonoBehaviour {
 		//Instantiate a shot, pointing the same direction as the shooter.
 		GameObject o = Instantiate(ammo, this.transform.position, Quaternion.identity) as GameObject;
 		cooldown = cdtime;
+	}
+	
+	public void SetPowerShot() {
+		isPowerShot = true;
 	}
 	
 	public abstract void PowerShot();

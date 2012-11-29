@@ -9,6 +9,9 @@ public class MachineGun : Weapon {
 	}
 	
 	override public void PowerShot(){
-		//pass for now
+				GameObject o = Instantiate(ammo, this.transform.position, Quaternion.identity) as GameObject;
+		o.GetComponent<Bullet>().damage = o.GetComponent<Bullet>().damage * 2;
+		cooldown = cdtime;
+		this.isPowerShot = false;
 	}
 }

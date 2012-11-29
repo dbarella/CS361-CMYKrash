@@ -14,6 +14,9 @@ void Start () {
 	}*/
 
 	override public void PowerShot(){
-		//pass for now
+		GameObject o = Instantiate(ammo, this.transform.position, Quaternion.identity) as GameObject;
+		o.GetComponent<Laser>().damage = o.GetComponent<Laser>().damage * 2;
+		cooldown = cdtime;
+		this.isPowerShot = false;
 	}
 }
