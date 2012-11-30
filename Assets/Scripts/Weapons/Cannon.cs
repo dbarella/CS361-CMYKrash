@@ -9,6 +9,9 @@ public class Cannon : Weapon {
 	}
 	
 	override public void PowerShot(){
-		//pass for now
+		GameObject o = Instantiate(ammo, this.transform.position, Quaternion.identity) as GameObject;
+		o.GetComponent<Bomb>().damage = o.GetComponent<Bomb>().damage * 2;
+		cooldown = cdtime;
+		this.isPowerShot = false;
 	}
 }
