@@ -7,7 +7,7 @@ public class Falloff : MonoBehaviour{
 
 	void Start(){
 		leftbound = -Camera.main.orthographicSize*Camera.main.aspect - 1;
-		rightbound = Camera.main.orthographicSize*Camera.main.aspect + 10;	
+		rightbound = Camera.main.orthographicSize*Camera.main.aspect + 20;	
 	}
 
 	void Update(){

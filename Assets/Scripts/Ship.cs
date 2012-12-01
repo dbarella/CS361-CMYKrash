@@ -183,7 +183,7 @@ public class Ship : MonoBehaviour {
 	public void Die(GameManagement mgmt) {
 	
 		Debug.Log("ship is out of healths.  Calling mgmt.PlayerDead()");
-		//mgmt.ShipDied();//Lets the GM know a ship is dead(do we care anymore?) /*Commented out by Emma for now as this method needs an int argument--which ship it is, I think?-- and if the ship knows this about itself, I can't find it. If this actually needs to be here, that'll need to be fixed for real.*/
+		mgmt.ShipDied();//Lets the GM know a ship is dead(do we care anymore?) /*Commented out by Emma for now as this method needs an int argument--which ship it is, I think?-- and if the ship knows this about itself, I can't find it. If this actually needs to be here, that'll need to be fixed for real.*/
 		Destroy(gameObject);//and destroys itself.
 		
 	}

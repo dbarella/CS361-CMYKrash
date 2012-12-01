@@ -6,6 +6,7 @@ using System.IO;
 public class EditorManagement : MonoBehaviour {
 	//set to appropriate prefabs
 	public GameObject[] list;
+	public GameObject levelData;
 	//keeps track of current button pressed
 	private int currentState;
 	//screen stuff
@@ -23,7 +24,7 @@ public class EditorManagement : MonoBehaviour {
 	void Start () {
 		//screen
 		//Vector3 hnw = camera.ScreenToWorldPoint(new Vector3(Screen.width,Screen.height,camera.nearClipPlane));
-		
+
 		screenHeight = Screen.height;
 		MaterialSetup();
 		Setup ();
@@ -69,10 +70,17 @@ public class EditorManagement : MonoBehaviour {
 				
 				InitTile(i,j,newBoard);
 				if(i < rows && j < cols){ 
+					//Debug.Log ("new tile: "+newBoard[i,j]);
 					newBoard[i,j].SetObj(board[i,j].GetObj());
 				}
-				board[i,j].Die();
 			}
+		}
+		for(int i = 0; i < rows; i ++){
+			for(int j = 0; j < cols ; j++){
+				board[i,j].Die();
+
+			}
+			
 		}
 		//this is the new board
 		rows = x;
@@ -124,6 +132,9 @@ public class EditorManagement : MonoBehaviour {
 	//need to do this
 	public void Play() {
 		Debug.Log("Play");
+		GameObject go = Instantiate(levelData, levelData.transform.position, levelData.transform.rotation) as GameObject;
+		go.GetComponent<PassBetweenScenes>().setScene(MixToPlayable(), list);
+		Application.LoadLevel("Game");
 	}
 	public void Load(string fname) {
 		fname = "Assets/Maps/" + fname + ".txt";
@@ -144,6 +155,7 @@ public class EditorManagement : MonoBehaviour {
         	}
 		}
 	}
+
 	private int[,] LoadBoard(StreamReader sr, int width, int height){
 		int[,] board = new int[width,height];
             	for(int i = 0; i < width; i ++){
@@ -181,9 +193,21 @@ public class EditorManagement : MonoBehaviour {
 		for(int i = 0; i < rows; i++) {
 			string temp = "";
 			for(int j = 0; j < cols; j++) {
+				Debug.Log (i+" "+j+" "+board[i,j]);
 				temp = temp + board[i,j].GetObj()+" ";
 			}
 			s[i] = temp;
+		}
+		return s;
+	}
+	public int[][] MixToPlayable(){
+		int[][] s = new int[rows][];
+		for(int i = 0; i < rows; i++) s[i] = new int[cols];
+		for(int i = 0; i < rows; i++) {
+			string temp = "";
+			for(int j = 0; j < cols; j++) {
+				s[i][j] = board[i,j].GetObj();
+			}
 		}
 		return s;
 	}

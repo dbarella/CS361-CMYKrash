@@ -35,6 +35,14 @@ public abstract class Weapon : MonoBehaviour {
 		isPowerShot = true;
 	}
 	
+	public float GetcdTime() {
+		return cdtime;	
+	}
+	
+	public float GetCooldown() {
+		return cooldown;	
+	}
+	
 	public abstract void PowerShot();
 	
 }

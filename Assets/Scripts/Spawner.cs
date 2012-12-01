@@ -22,6 +22,7 @@ public class Spawner : MonoBehaviour {
 	*Currently, there's no instantiation that needs to take place with this.
 	*/
 	void Start(){
+		Debug.Log ("camera: "+Camera.main.GetComponent<GameManagement>());
 		objArr = Camera.main.GetComponent<GameManagement>().GetObjectArray();
 		timer = spawnTime;
 		//randMinTime = spawnTime;
@@ -40,11 +41,16 @@ public class Spawner : MonoBehaviour {
 			timer = Random.Range(randMinTime, randMaxTime);
 		}
 		//If we're not a random spawner, iterate throught the ticker.
-		if(!isRandomSpawner && timer <=0){
-			SpawnObject(objArr[(tickArray[ticker++])]);
-			timer = spawnTime;
+		if(!isRandomSpawner && ticker >= tickArray.Length){
+			Camera.main.GetComponent<GameManagement>().LevelEnded();
 		}
-
+		else if(!isRandomSpawner && timer <=0){
+			Debug.Log ("spawner: "+tickArray[ticker]+" "+ticker);
+			if(tickArray[ticker] != 0)SpawnObject(objArr[(tickArray[ticker])]);
+			timer = spawnTime;
+			ticker++;
+		}
+		
 		//Dercrement timer if > 0
 		if(timer > 0){
 			timer -= Time.deltaTime;
@@ -58,11 +64,14 @@ public class Spawner : MonoBehaviour {
 	return (GameObject)Instantiate(o, transform.position, transform.rotation);
 	}
 	
-	public void setTickArray(int[] arr){
+	public void SetTickArray(int[] arr){
 		tickArray = arr;
 	}
 	
-	public int[] getTickArray(){
+	public int[] GetTickArray(){
 		return tickArray;
+	}
+	public void SetObjArray(GameObject[] array){
+		objArr = array;
 	}
 }
