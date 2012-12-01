@@ -19,7 +19,7 @@ public abstract class Spawnable : MonoBehaviour {
 	protected virtual void Scale(){	
 	}
 	public void Move(){
-		Debug.Log (this.gameObject.tag + " moving with a speedMult of " + speedMult);
+		//Debug.Log (this.gameObject.tag + " moving with a speedMult of " + speedMult);
 		transform.Translate(gm.GetGameSpeed()*speedMult*Time.fixedDeltaTime*new Vector3(-1,0,0));
 	}
 	public void ChangeLane(int direction){
