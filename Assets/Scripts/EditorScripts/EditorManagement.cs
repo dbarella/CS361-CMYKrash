@@ -24,7 +24,6 @@ public class EditorManagement : MonoBehaviour {
 	void Start () {
 		//screen
 		//Vector3 hnw = camera.ScreenToWorldPoint(new Vector3(Screen.width,Screen.height,camera.nearClipPlane));
-
 		screenHeight = Screen.height;
 		MaterialSetup();
 		Setup ();
@@ -147,6 +146,13 @@ public class EditorManagement : MonoBehaviour {
 			Debug.Log ("Loading...");
 			 using (StreamReader sr = File.OpenText(fname))
         	{
+				int prefabLength = Convert.ToInt32(sr.ReadLine());
+				for(int i = 1; i < prefabLength; i++){
+					string temp = sr.ReadLine();
+					Debug.Log (temp);
+					list[i] = Resources.Load("Spawnables/"+temp) as GameObject;
+					Debug.Log (list[i]);
+				}
 				int width = Convert.ToInt32(sr.ReadLine());
             	int height = Convert.ToInt32(sr.ReadLine ());
 				
@@ -172,6 +178,11 @@ public class EditorManagement : MonoBehaviour {
 		using (StreamWriter sw = new StreamWriter("Assets/Maps/" + fname + ".txt"))
 		{
 			string[] strings = MixDown();
+			//don't write 0--that's always null
+			sw.WriteLine (list.Length);
+			for(int i = 1; i < list.Length; i++){ 
+				sw.WriteLine(list[i].name);
+			}
 			sw.WriteLine(rows);
 			sw.WriteLine(cols);
 			foreach (string s in strings){
