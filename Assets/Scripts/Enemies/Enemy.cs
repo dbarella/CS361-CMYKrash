@@ -3,6 +3,7 @@ using System.Collections;
 
 public abstract class Enemy : Spawnable {
 	
+	//GameObject explosionPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -17,15 +18,19 @@ public abstract class Enemy : Spawnable {
 	public void OnTriggerEnter(Collider col){
 		float temp;
 		if(col.tag == "Player"){
-			Destroy(gameObject);
+			Die();
 		}
 		if(col.tag == "Ammo"){
 			temp = col.gameObject.GetComponent<Ammo>().GetDamage();
 			TakeDamage(temp);
 			if(health<=0){
-				Destroy(gameObject);
+				Die();
 			}
 		}
+	}
+	new public void Die() {
+//		explosionPrefab = Instantiate(explosionPrefab, transform.position, transform.rotation) as GameObject;
+		Destroy(gameObject);
 	}
 	
 }

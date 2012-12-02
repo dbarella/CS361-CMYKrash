@@ -64,7 +64,7 @@ public class CyanShipGUI : MonoBehaviour {
 		
 		Vector3 shipPos = new Vector3(ship.gameObject.transform.position.x,ship.gameObject.transform.position.y,ship.gameObject.transform.position.z);
 		Vector2 shipScreenPos = new Vector2(Camera.main.WorldToScreenPoint(shipPos).x,Camera.main.WorldToScreenPoint(shipPos).y);
-		Debug.Log (shipScreenPos);
+//		Debug.Log (shipScreenPos);
 
         style.normal.background = texture;
         GUI.Box(new Rect(Screen.width - Screen.width/1.7f, (Screen.height-Screen.height/13.5f), (Screen.height/18*curHealth), Screen.height/20), "", style);
