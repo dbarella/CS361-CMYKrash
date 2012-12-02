@@ -5,7 +5,7 @@ public class MachineGun : Weapon {
 
 	// Use this for initialization
 	void Start () {
-	
+		cdtime = 0.2f; //Solid machine gun speed
 	}
 	
 	override public void PowerShot(){

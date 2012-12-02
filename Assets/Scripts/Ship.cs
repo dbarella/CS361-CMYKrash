@@ -61,11 +61,11 @@ public class Ship : MonoBehaviour {
 		if(laneChanging)
 			ChangeLanes (direction);
 		//Input keys for changing of the lanes.  
-		else if(Input.GetKeyDown("w")){//if we want to move up, and we're not currently changing lanes
+		else if(Input.GetKey("w")){//if we want to move up, and we're not currently changing lanes
 			direction = 1;
 			ChangeLanes(direction);
 		}
-		else if(Input.GetKeyDown("s")){
+		else if(Input.GetKey("s")){
 			direction = -1;
 			ChangeLanes(direction);
 		}

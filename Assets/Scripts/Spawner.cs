@@ -63,7 +63,9 @@ public class Spawner : MonoBehaviour {
 	//Instantiate the chosen object at the spawner's position and direction.
 	return (GameObject)Instantiate(o, transform.position, transform.rotation);
 	}
-	
+	public void SetRandom(bool isRandom) {
+		this.isRandomSpawner = isRandom;
+	}
 	public void SetTickArray(int[] arr){
 		tickArray = arr;
 	}
