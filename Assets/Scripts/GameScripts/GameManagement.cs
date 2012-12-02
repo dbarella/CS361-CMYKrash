@@ -49,7 +49,8 @@ public class GameManagement : MonoBehaviour {
 			PassBetweenScenes pbs = go.GetComponent<PassBetweenScenes>();
 			Setup(pbs.getScene(),pbs.getSpawnables());
 		}
-		else Setup("Assets/Maps/level.txt");
+		else Setup(); //Sets up a random-spawning game.		
+		//Setup("Assets/Maps/level.txt");
 		//Setup();
 	}
 	
@@ -65,10 +66,13 @@ public class GameManagement : MonoBehaviour {
 		spawners = new GameObject[numLanes];
 		ships = new GameObject[numShips];
 		
+		Debug.Log("Setup spawner array length: " + spawners.Length);
+		
 		//Setup the spawners
 		int i = 0;
 		foreach(GameObject spawner in spawners) {
 			spawners[i] = Instantiate(spawnerPrefab, new Vector3(screenWidth + spawnerOffset, (Camera.main.ViewportToWorldPoint(Vector3.zero).y) + (float)(i+.5) * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
+			spawners[i].GetComponent<Spawner>().SetRandom(true);
 			i++;
 		}
 		
@@ -88,7 +92,7 @@ public class GameManagement : MonoBehaviour {
 
 	//TODO:Currently does not include the GameObject array, since the spawners grab that in Start() right now
 	public void Setup(int[][] map, GameObject[] prefabs){
-		Debug.Log(map[0][1]);
+//		Debug.Log(map[0][1]);
 		numLanes = map.Length;	//This will get the first dimensional length of the array, aka the height.
 		laneHeight = screenHeight / (float) numLanes;	//Set this again, since it has changed
 		//TODO: Do we ensure that the objects won't overlap if there are lots of lanes?
@@ -99,7 +103,7 @@ public class GameManagement : MonoBehaviour {
 		foreach(GameObject spawner in spawners) {
 			spawners[i] = Instantiate(spawnerPrefab, new Vector3(screenWidth + spawnerOffset, (Camera.main.ViewportToWorldPoint(Vector3.zero).y) + (float)(i+.5) * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
 			Spawner script = spawners[i].GetComponent<Spawner>();
-			script.isRandomSpawner = false;
+			script.SetRandom(false);
 			script.SetObjArray(prefabs);
 			script.SetTickArray(map[i]);	//We'll pass in the i'th array from map.
 			i++;

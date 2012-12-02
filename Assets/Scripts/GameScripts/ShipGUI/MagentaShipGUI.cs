@@ -63,7 +63,7 @@ public class MagentaShipGUI : MonoBehaviour {
 				
 		Vector3 shipPos = new Vector3(ship.gameObject.transform.position.x,ship.gameObject.transform.position.y,ship.gameObject.transform.position.z);
 		Vector2 shipScreenPos = new Vector2(Camera.main.WorldToScreenPoint(shipPos).x,Camera.main.WorldToScreenPoint(shipPos).y);
-		Debug.Log (shipScreenPos);
+//		Debug.Log (shipScreenPos);
 		
         style.normal.background = texture;
 		//scale all of these to Screen height and Width

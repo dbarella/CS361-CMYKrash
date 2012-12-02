@@ -25,8 +25,7 @@ public class EnemyExplosion : Enemy {
 	}
 	//after colliders are done: death.
 	void FixedUpdate(){
-			this.Die();		
-		
+		this.Die();	
 	}
 	
 	void OnTriggerEnter(Collider col){
