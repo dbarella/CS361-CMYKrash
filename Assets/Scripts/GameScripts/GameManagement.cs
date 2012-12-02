@@ -6,6 +6,7 @@ using System;
 
 public class GameManagement : MonoBehaviour {
 	
+	//item 0 of this must be null or everything will break
 	public GameObject[] spawnablePrefabs;	//The "key" mapping integers to prefabs
 	public GameObject[] shipPrefabs;
 	public GameObject spawnerPrefab;
@@ -136,6 +137,11 @@ public class GameManagement : MonoBehaviour {
 		string line;
 		StreamReader theReader = new StreamReader(fname, Encoding.Default);
 		using (theReader){
+			int nPrefabs = Convert.ToInt32(theReader.ReadLine());
+			for(int i = 1; i < nPrefabs; i++){
+				
+				spawnablePrefabs[i] = Resources.Load("Spawnables/"+theReader.ReadLine ()) as GameObject;
+			}	
 			line = theReader.ReadLine();
 			int x = Convert.ToInt32(line);
 			line = theReader.ReadLine();
