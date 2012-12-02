@@ -56,7 +56,7 @@ public class EditorManagement : MonoBehaviour {
 		ResizeBoard (width,height);
 		for(int i = 0; i < width; i++){
 			for(int j = 0; j<height; j++){
-				Debug.Log ("Setup tile: data[i,j]");
+//				Debug.Log ("Setup tile: data[i,j]");
 				board[i,j].SetObj(data[i,j]);
 			}
 		}
@@ -92,7 +92,7 @@ public class EditorManagement : MonoBehaviour {
 		
 		Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(j*tileHeight+tileHeight/2.0f, (rows-i)*tileHeight-tileHeight/2.0f+0.15f*screenHeight, 0));
 		position.z = tileOffset;
-		Debug.Log (rows+" "+i);
+//		Debug.Log (rows+" "+i);
 		GameObject go = Instantiate(tilePrefab, position, tilePrefab.transform.rotation) as GameObject;
 		board[i,j] = go.GetComponent<Tile>();
 		//for some reason all of the Tiles are instantiating at the same pos. I will not attempt to debug as I am exhausted -js

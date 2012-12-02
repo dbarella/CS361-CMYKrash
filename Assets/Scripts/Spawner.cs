@@ -22,7 +22,7 @@ public class Spawner : MonoBehaviour {
 	*Currently, there's no instantiation that needs to take place with this.
 	*/
 	void Start(){
-		Debug.Log ("camera: "+Camera.main.GetComponent<GameManagement>());
+//		Debug.Log ("camera: "+Camera.main.GetComponent<GameManagement>());
 		objArr = Camera.main.GetComponent<GameManagement>().GetObjectArray();
 		timer = spawnTime;
 		//randMinTime = spawnTime;
@@ -45,7 +45,7 @@ public class Spawner : MonoBehaviour {
 			Camera.main.GetComponent<GameManagement>().LevelEnded();
 		}
 		else if(!isRandomSpawner && timer <=0){
-			Debug.Log ("spawner: "+tickArray[ticker]+" "+ticker);
+//			Debug.Log ("spawner: "+tickArray[ticker]+" "+ticker);
 			if(tickArray[ticker] != 0)SpawnObject(objArr[(tickArray[ticker])]);
 			timer = spawnTime;
 			ticker++;
