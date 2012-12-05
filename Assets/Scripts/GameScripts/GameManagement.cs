@@ -50,9 +50,8 @@ public class GameManagement : MonoBehaviour {
 			PassBetweenScenes pbs = go.GetComponent<PassBetweenScenes>();
 			Setup(pbs.getScene(),pbs.getSpawnables());
 		}
-		else Setup(); //Sets up a random-spawning game.		
-		//Setup("Assets/Maps/level.txt");
-		//Setup();
+		else //Setup(); //Sets up a random-spawning game.		
+		Setup("level");
 	}
 	
 	// Update is called once per frame
@@ -93,7 +92,7 @@ public class GameManagement : MonoBehaviour {
 
 	//TODO:Currently does not include the GameObject array, since the spawners grab that in Start() right now
 	public void Setup(int[][] map, GameObject[] prefabs){
-//		Debug.Log(map[0][1]);
+		Debug.Log("hello "+prefabs[0]);
 		numLanes = map.Length;	//This will get the first dimensional length of the array, aka the height.
 		laneHeight = screenHeight / (float) numLanes;	//Set this again, since it has changed
 		//TODO: Do we ensure that the objects won't overlap if there are lots of lanes?
@@ -133,7 +132,26 @@ public class GameManagement : MonoBehaviour {
 	
 	private int[][] ParseFile(string fname){
 		int[][] ret;
-		try{
+		TextAsset file = Resources.Load("Maps/"+fname) as TextAsset;
+		Debug.Log (file.text);
+		string[] lines = file.text.Split('\n');
+		int nPrefabs = Convert.ToInt32(lines[0]);
+		for(int i = 1; i < nPrefabs; i++){				
+			spawnablePrefabs[i] = Resources.Load("Spawnables/"+lines[i]) as GameObject;
+		}
+		int x = Convert.ToInt32(lines[nPrefabs]);
+		int y = Convert.ToInt32(lines[nPrefabs+1]);
+		ret = new int[x][];
+		for(int i=0; i<x;i++){
+				ret[i] = new int[y];
+		}
+		for(int i = 0; i < x; i++){
+			string[] line = lines[i+nPrefabs+2].Split(' ');
+			for(int j = 0; j< y; j++){
+				ret[i][j] = Convert.ToInt32(line[j]); 
+			}
+		}
+		/*try{
 		string line;
 		StreamReader theReader = new StreamReader(fname, Encoding.Default);
 		using (theReader){
@@ -165,14 +183,14 @@ public class GameManagement : MonoBehaviour {
 				
 			}
 			while (j<x);
-			
+			*/
 			return ret;
-		}
+		/*}
 	}
 		catch (FileNotFoundException ex){
 			Debug.Log("File not found");
 			return null;
-		}
+		}*/
 	} 
 	public void LevelEnded(){
 		Debug.Log ("spawning done");

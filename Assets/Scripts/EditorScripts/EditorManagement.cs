@@ -128,7 +128,9 @@ public class EditorManagement : MonoBehaviour {
 	public void SetTile(Tile t, int currentState) {
 		t.SetObj(currentState);
 	}
-	//need to do this
+	public GameObject[] GetGOList(){
+		return list;
+	}
 	public void Play() {
 		Debug.Log("Play");
 		GameObject go = Instantiate(levelData, levelData.transform.position, levelData.transform.rotation) as GameObject;
@@ -136,9 +138,26 @@ public class EditorManagement : MonoBehaviour {
 		Application.LoadLevel("Game");
 	}
 	public void Load(string fname) {
-		fname = "Assets/Maps/" + fname + ".txt";
-
-		if (!File.Exists(fname))
+		//fname = Application.dataPath+"/Resources/Maps/" + fname + ".txt";
+		TextAsset file = Resources.Load("Maps/"+fname) as TextAsset;
+		Debug.Log (fname);
+		string[] lines = file.text.Split('\n');
+		int prefabLength = Convert.ToInt32(lines[0]);
+		for(int i = 1; i < prefabLength; i++){
+			string temp = lines[i];
+			list[i] = Resources.Load("Spawnables/"+temp) as GameObject;
+			Debug.Log (list[i]);
+		}
+		int width = Convert.ToInt32(lines[prefabLength]);
+        Debug.Log (width);
+		int height = Convert.ToInt32(lines[prefabLength+1]);
+		string[] rows = new string[width];
+		for(int i = prefabLength+2; i < prefabLength+2+width; i++){
+			rows[i-prefabLength-2] = lines[i];
+		}
+		int[,] board = LoadBoard (rows, width,height);
+		Setup (width,height,board);
+		/*if (!File.Exists(fname))
         {
 			Debug.Log ("File "+fname+" not found");
 		}
@@ -159,23 +178,22 @@ public class EditorManagement : MonoBehaviour {
 				int[,] board = LoadBoard (sr, width,height);
 				Setup (width,height,board);
         	}
-		}
+		}*/
 	}
 
-	private int[,] LoadBoard(StreamReader sr, int width, int height){
+	private int[,] LoadBoard(string[] rows, int width, int height){
 		int[,] board = new int[width,height];
-            	for(int i = 0; i < width; i ++){
-					string s = sr.ReadLine();
-					string[] line = s.Split(new Char[]{' '});
-					for(int j = 0; j < height; j++){
-						board[i,j] = Convert.ToInt32(line[j]);
-					}
+        for(int i = 0; i < width; i ++){
+			string[] line = rows[i].Split(new Char[]{' '});
+			for(int j = 0; j < height; j++){
+				board[i,j] = Convert.ToInt32(line[j]);
 				}
+		}
 		return board;
 	}
 	public void Save(string fname) {
 		Debug.Log("Saving...");
-		using (StreamWriter sw = new StreamWriter("Assets/Maps/" + fname + ".txt"))
+		using (StreamWriter sw = new StreamWriter(Application.dataPath+"/Resources/Maps/" + fname + ".txt"))
 		{
 			string[] strings = MixDown();
 			//don't write 0--that's always null
