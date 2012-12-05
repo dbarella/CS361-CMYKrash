@@ -1,0 +1,20 @@
+7
+Missile
+Planet
+Carrier
+Kamikaze
+Artillery
+ShieldPowerUp
+11
+2
+1 0 
+1 0 
+1 0 
+1 0 
+1 0 
+1 0 
+1 0 
+1 0 
+1 0 
+1 0 
+1 0 
