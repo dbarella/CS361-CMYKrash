@@ -45,7 +45,8 @@ public class Spawner : MonoBehaviour {
 
 			}
 			index--;
-			if(index != 0){			
+			if(index != 0 && index < objArr.Length){	
+				//Debug.Log(index);
 				SpawnObject (objArr[index]);
 			}
 			//SpawnObject(prefabList[Random.Range(0, prefabList.Count -1)]);
