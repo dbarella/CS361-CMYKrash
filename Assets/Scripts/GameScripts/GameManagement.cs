@@ -132,6 +132,8 @@ public class GameManagement : MonoBehaviour {
 
 	//TODO:Currently does not include the GameObject array, since the spawners grab that in Start() right now
 	public void Setup(int[][] map, GameObject[] prefabs){
+		//foreach(GameObject prefab in prefabs) Debug.Log(prefab);
+		this.spawnablePrefabs = prefabs;
 		numLanes = map.Length;	//This will get the first dimensional length of the array, aka the height.
 		laneHeight = screenHeight / (float) numLanes;	//Set this again, since it has changed
 		//TODO: Do we ensure that the objects won't overlap if there are lots of lanes?
@@ -143,7 +145,7 @@ public class GameManagement : MonoBehaviour {
 			spawners[i] = Instantiate(spawnerPrefab, new Vector3(screenWidth + spawnerOffset, (Camera.main.ViewportToWorldPoint(Vector3.zero).y) + (float)(i+.5) * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
 			Spawner script = spawners[i].GetComponent<Spawner>();
 			script.SetRandom(false);
-			script.SetObjArray(prefabs);
+			//script.SetObjArray(prefabs);
 			script.SetTickArray(map[i]);	//We'll pass in the i'th array from map.
 			i++;
 		}
