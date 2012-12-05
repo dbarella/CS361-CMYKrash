@@ -7,6 +7,7 @@ public class EnemyExplosion : Enemy {
 	public float superfluousVisualOffset = 10.0f;
 	
 	void Start(){
+		damage = 3;
 		//make a sphere collider
 		SphereCollider s = gameObject.AddComponent("SphereCollider") as SphereCollider;
 		//centered at the bomb
@@ -28,7 +29,7 @@ public class EnemyExplosion : Enemy {
 		this.Die();	
 	}
 	
-	void OnTriggerEnter(Collider col){
+	new void OnTriggerEnter(Collider col){
 		Debug.Log ("Explosion hit: "+col.gameObject.tag);
 	}
 }

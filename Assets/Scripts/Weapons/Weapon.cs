@@ -27,7 +27,7 @@ public abstract class Weapon : MonoBehaviour {
 	
 	public void StandardShot(){
 		//Instantiate a shot, pointing the same direction as the shooter.
-		GameObject o = Instantiate(ammo, this.transform.position, Quaternion.identity) as GameObject;
+		GameObject o = Instantiate(ammo, this.transform.position + 10*Vector3.right, Quaternion.identity) as GameObject;
 		cooldown = cdtime;
 	}
 	
