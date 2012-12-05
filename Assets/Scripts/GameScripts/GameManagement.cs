@@ -237,8 +237,8 @@ public class GameManagement : MonoBehaviour {
 				Time.timeScale = 0;
 			} else {
 				Time.timeScale = 1;
-			}*/
-		GUI.EndGroup ();
+			}
+		GUI.EndGroup (); */
 		
 		if(won == true){
 			GUI.BeginGroup (new Rect (Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 100));		
