@@ -90,6 +90,7 @@ public class GameManagement : MonoBehaviour {
 				_tmpOffset = 0.0f;
 			}
 			ships[i+1] = Instantiate(shipPrefabs[i+1], new Vector3(_tmpOffset + shipSpawnOffset - screenWidth, (float)i * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
+			ships[i+1].GetComponent<Ship>().SetShipInstance(i);
 			i++;
 		}
 	}
@@ -216,7 +217,7 @@ public class GameManagement : MonoBehaviour {
 		return gameSpeed;
 	}
 	public GameObject[] GetObjectArray() {
-		print ("Spawnable Prefabs: "+spawnablePrefabs.Length);
+		//print("Spawnable Prefabs: "+spawnablePrefabs.Length);
 		return spawnablePrefabs;
 	}
 	public GameObject[] GetShipsArray(){

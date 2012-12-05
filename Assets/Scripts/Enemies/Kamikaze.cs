@@ -14,13 +14,13 @@ public class Kamikaze : Enemy {
 		Move ();
 	}
 	
-	void OnTriggerEnter(Collider col){
+	new void OnTriggerEnter(Collider col){
 		float temp;
 		if(col.tag == "Player"){
 			Destroy (gameObject);
 		}
 		if(col.tag == "Ammo"){
-			Debug.Log ("Carrier hit by ammo");
+			//Debug.Log ("Carrier hit by ammo");
 			temp = col.gameObject.GetComponent<Ammo>().GetDamage();
 			TakeDamage(temp);
 			if(health<=0){

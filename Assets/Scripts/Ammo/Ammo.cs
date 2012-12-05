@@ -20,7 +20,7 @@ public abstract class Ammo : MonoBehaviour {
 	}
 	
 	public float GetDamage() {
-		Debug.Log ("GetDamage Called.  Returning: " + damage);
+//		Debug.Log ("GetDamage Called.  Returning: " + damage);
 		return damage;
 	}
 	

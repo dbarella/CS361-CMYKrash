@@ -4,8 +4,7 @@ using System.Collections;
 public class Radar : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
-		Debug.Log (transform.parent.name);
-	
+		//Debug.Log (transform.parent.name);
 	}
 	
 	// Update is called once per frame

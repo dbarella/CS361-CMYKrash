@@ -30,6 +30,6 @@ public class EnemyExplosion : Enemy {
 	}
 	
 	new void OnTriggerEnter(Collider col){
-		Debug.Log ("Explosion hit: "+col.gameObject.tag);
+		//Debug.Log ("Explosion hit: "+col.gameObject.tag);
 	}
 }

@@ -30,7 +30,7 @@ public class Laser : Ammo {
 	}
 
 	void OnTriggerEnter(Collider col){
-		Debug.Log ("Laser collided with "+col.gameObject.tag);
+		//Debug.Log ("Laser collided with "+col.gameObject.tag);
 	}
 
 }

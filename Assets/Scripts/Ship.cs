@@ -35,6 +35,10 @@ public class Ship : MonoBehaviour {
 	private bool shielded = false;
 	private bool powerShot = false;
 	
+	//Prototype vars
+	private int shipInstance;
+	private bool laneSplit;
+	
 	// Use this for initialization
 	void Start () { 
 		//Source the Game Management
@@ -43,7 +47,7 @@ public class Ship : MonoBehaviour {
 		laneHeight = mgmt.GetLaneHeight();
 		
 		laneChanging = false;
-		//Source the weapon? or is that part of the prefab?	
+		laneSplit = false;
 	}
 	
 	void FixedUpdate(){
@@ -58,16 +62,30 @@ public class Ship : MonoBehaviour {
 	
 	
 	public void Move(){
-		if(laneChanging)
+		if(laneChanging) {
 			ChangeLanes (direction);
 		//Input keys for changing of the lanes.  
-		else if(Input.GetKey("w")){//if we want to move up, and we're not currently changing lanes
+		} else if(Input.GetKey("w")){//if we want to move up, and we're not currently changing lanes
 			direction = 1;
 			ChangeLanes(direction);
-		}
-		else if(Input.GetKey("s")){
+		} else if(Input.GetKey("s")){
 			direction = -1;
 			ChangeLanes(direction);
+		}
+		//Lane Spread Toggle
+		else if (Input.GetKeyDown("space") && shipInstance != 0) {
+//			Debug.Log(laneSplit);
+/*			ChangeLanes(!laneSplit && shipInstance!=0 ? shipInstance : -shipInstance);
+			laneSplit = !laneSplit; */
+			if(!laneSplit) {
+				direction = shipInstance;
+				ChangeLanes(shipInstance);
+				laneSplit = true;
+			} else {
+				direction = -shipInstance;
+				ChangeLanes(-shipInstance);
+				laneSplit = false;
+			}
 		}
 		if(Input.GetKey ("d")){
 			if(transform.position.x < (mgmt.GetScreenWidth() / 2)){//this doesn't allow the player to go beyond halfway across the screen.
@@ -79,7 +97,6 @@ public class Ship : MonoBehaviour {
 				transform.Translate(new Vector3(1,0,0)*(-1.0f)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
-		
 	}
 	
 	//helper method for changing lanes. direction is -1 or 1 depending on whether ship is going up or down.
@@ -152,12 +169,12 @@ public class Ship : MonoBehaviour {
 			TakeDamage(other.gameObject.GetComponent<Spawnable>().GetDamage());
 		}
 		if(other.gameObject.CompareTag("PowerUp")) {//otherwise, if we have a powerup,
-			Debug.Log ("Powerup");
+			Debug.Log (this.name + ": Powerup");
 			if(other.gameObject.GetComponent<PowerUp>().IsShield()) { //if it's a shield
-				Debug.Log ("shielded");
+				Debug.Log (this.name + ": Shielded");
 				shielded = true;//turn on shield
 			}else{//otherwise, it has to be a powershot
-				Debug.Log("SUPERSAIYAN");
+				Debug.Log(this.name + ": Sowershot");
 				this.GetComponent<Weapon>().SetPowerShot();
 			}
 		}
@@ -176,8 +193,9 @@ public class Ship : MonoBehaviour {
 	}
 	*/
 	
-	
-	
+	public void SetShipInstance(int i) {
+		shipInstance = i;
+	}
 	
 	//death function
 	public void Die(GameManagement mgmt) {
