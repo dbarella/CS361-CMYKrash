@@ -22,7 +22,6 @@ public class Spawner : MonoBehaviour {
 	*Currently, there's no instantiation that needs to take place with this.
 	*/
 	void Start(){
-		Debug.Log ("camera: "+Camera.main.GetComponent<GameManagement>());
 		objArr = Camera.main.GetComponent<GameManagement>().GetObjectArray();
 		timer = spawnTime;
 		//randMinTime = spawnTime;
@@ -61,7 +60,7 @@ public class Spawner : MonoBehaviour {
 	 */
 	GameObject SpawnObject(GameObject o){
 	//Instantiate the chosen object at the spawner's position and direction.
-	return (GameObject)Instantiate(o, transform.position, transform.rotation);
+		return (GameObject)Instantiate(o, transform.position, transform.rotation);
 	}
 	public void SetRandom(bool isRandom) {
 		this.isRandomSpawner = isRandom;

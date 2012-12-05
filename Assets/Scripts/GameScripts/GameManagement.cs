@@ -92,7 +92,6 @@ public class GameManagement : MonoBehaviour {
 
 	//TODO:Currently does not include the GameObject array, since the spawners grab that in Start() right now
 	public void Setup(int[][] map, GameObject[] prefabs){
-		Debug.Log("hello "+prefabs[0]);
 		numLanes = map.Length;	//This will get the first dimensional length of the array, aka the height.
 		laneHeight = screenHeight / (float) numLanes;	//Set this again, since it has changed
 		//TODO: Do we ensure that the objects won't overlap if there are lots of lanes?
@@ -133,7 +132,6 @@ public class GameManagement : MonoBehaviour {
 	private int[][] ParseFile(string fname){
 		int[][] ret;
 		TextAsset file = Resources.Load("Maps/"+fname) as TextAsset;
-		Debug.Log (file.text);
 		string[] lines = file.text.Split('\n');
 		int nPrefabs = Convert.ToInt32(lines[0]);
 		for(int i = 1; i < nPrefabs; i++){				
