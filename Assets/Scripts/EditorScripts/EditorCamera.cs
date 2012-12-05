@@ -11,7 +11,7 @@ public class EditorCamera : MonoBehaviour {
 	protected EditorManagement em;
 	
 	public Texture2D[] buttons;
-	public Texture2D[] PSL;
+	public Texture2D play, save, load;
 	string filename, xText, yText;
 	//protected EditorManagement em;
 	
@@ -27,8 +27,17 @@ public class EditorCamera : MonoBehaviour {
 		filename = "level";
 		xText = "7";
 		yText = "30";
+		play = Resources.Load("Textures/PSL/play-button") as Texture2D;
+		save = Resources.Load("Textures/PSL/save-button") as Texture2D;
+		load = Resources.Load("Textures/PSL/load-button") as Texture2D;
+		ButtonSetup();
 	}
-	
+	public void ButtonSetup(){
+		GameObject[] list = em.GetGOList();
+		for(int i = 1; i < list.Length; i++){
+			buttons[i] = Resources.Load ("Textures/Spawnables/"+list[i].name) as Texture2D;
+		}
+	}
 	// Update is called once per frame
 	void FixedUpdate () {
 //		transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftBound,rightBound), 0, 0);
@@ -58,15 +67,15 @@ public class EditorCamera : MonoBehaviour {
 			}
 		}
 		//textbox to change filename
-		filename = GUI.TextField (new Rect (Screen.width*0.8f, Screen.height-Screen.height/8.0f,Screen.height*0.1f,Screen.height*0.1f), filename, 40);
+		filename = GUI.TextField (new Rect (Screen.width*0.8f, Screen.height-Screen.height/8.0f,Screen.width/20.0f,Screen.width/20.0f), filename, 40);
 		//makes play, save, and load buttons
-		if(GUI.Button (new Rect(Screen.width*0.95f,Screen.height-Screen.height/8.0f,Screen.height*0.1f,Screen.height*0.1f),PSL[0])){
+		if(GUI.Button (new Rect(Screen.width*0.95f,Screen.height-Screen.height/8.0f,Screen.width/20.0f,Screen.width/20.0f),play)){
 			em.Play();
 		}
-		if(GUI.Button (new Rect(Screen.width*0.90f,Screen.height-Screen.height/8.0f,Screen.height*0.1f,Screen.height*0.1f),PSL[1])){
+		if(GUI.Button (new Rect(Screen.width*0.90f,Screen.height-Screen.height/8.0f,Screen.width/20.0f,Screen.width/20.0f),load)){
 			em.Load(filename);
 		}
-		if(GUI.Button (new Rect(Screen.width*0.85f,Screen.height-Screen.height/8.0f,Screen.height*0.1f,Screen.height*0.1f),PSL[2])){
+		if(GUI.Button (new Rect(Screen.width*0.85f,Screen.height-Screen.height/8.0f,Screen.width/20.0f,Screen.width/20.0f),save)){
 			em.Save(filename); 
 		}
         
