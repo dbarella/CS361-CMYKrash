@@ -10,6 +10,7 @@ public class GameManagement : MonoBehaviour {
 	public GameObject[] spawnablePrefabs;	//The "key" mapping integers to prefabs
 	public GameObject[] shipPrefabs;
 	public GameObject spawnerPrefab;
+	public float[][] probabilitySections;
 	
 	public int numLanes = 7;
 	public int numShips = 3;
@@ -27,6 +28,9 @@ public class GameManagement : MonoBehaviour {
 	
 	private bool won, lost, spawningDone;
 	private int shipsLeft;
+	private bool randomGame;
+	public float randomModeSwitchTime;
+	private float randomModeTimer;
 	
 	// Use this for initialization
 	void Awake () {
@@ -38,6 +42,7 @@ public class GameManagement : MonoBehaviour {
 		laneHeight = screenHeight / (float) numLanes;
 		won = false;
 		lost = false;
+		randomGame = false;
 		spawningDone = false;
 //		Debug.Log("GameManagement calculated laneHeight: " + laneHeight + " world units");
 		
@@ -48,25 +53,51 @@ public class GameManagement : MonoBehaviour {
 
 		if(go!= null){
 			PassBetweenScenes pbs = go.GetComponent<PassBetweenScenes>();
-			Setup(pbs.getScene(),pbs.getSpawnables());
-		}
-		else Setup(); //Sets up a random-spawning game.		
-		//Setup("Assets/Maps/level.txt");
-		//Setup();
+			if(pbs.GetFname() != null)
+				Setup(pbs.GetFname());
+			else
+				Setup(pbs.getScene(),pbs.getSpawnables());
+        }
+        else Setup(); //Sets up a random-spawning game.
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if(spawningDone){
 			if(GameObject.FindWithTag("Enemy")==null) won = true;
 		}
+		if(randomGame){
+			randomModeTimer -= Time.deltaTime;
+			if(randomModeTimer <= 0){
+				SetupRandomSpawners();
+				randomModeTimer = randomModeSwitchTime;
+			}
+		}
 	}
-	
+	private void SetupRandomSpawners(){
+		int index = UnityEngine.Random.Range(0, probabilitySections.Length);
+				foreach(GameObject spawn in spawners){
+					spawn.GetComponent<Spawner>().SetProbabilityArray(probabilitySections[index]);
+				}
+	}
+	//new random stuff: the way this works is you have a bunch of modes, which have different probabilities of things appearing.
+	//this was supposed to be set up in the inspector but for some reason it's not showing up in the inspector on my machine,
+	//so instead i hard code values into probabilitySections[] below. These numbers obviously need tuning. The order of the objects
+	//will be the way the prefabs are set up in the inspector. sorry about that opacity. Every randomModeSwitchTime seconds, the game
+	//will select a new random probability section.
+	//the zero index will be the probability that nothing appears at a given time. this should be non-zero to make the game not 
+	//completely terrifying.
 	public void Setup() {
 		//All setup methods ought to have this bit in here. (since numLanes may change in Setup)
 		spawners = new GameObject[numLanes];
 		ships = new GameObject[numShips];
-		
+		probabilitySections = new float[][] {
+			new float[] {0f, 0.5f, 0f, 0f, 0f, 0f, 0f, 0.5f},
+    		new float[] {0f, 0f, 0.5f, 0.5f, 0f, 0f, 0f, 0f},
+    		new float[] {0f, 0f, 0f, 0f, 0.5f, 0.5f, 0f, 0f}
+		};
+		randomGame = true;
+		randomModeTimer = randomModeSwitchTime;
 		Debug.Log("Setup spawner array length: " + spawners.Length);
 		
 		//Setup the spawners
@@ -76,7 +107,8 @@ public class GameManagement : MonoBehaviour {
 			spawners[i].GetComponent<Spawner>().SetRandom(true);
 			i++;
 		}
-		
+		SetupRandomSpawners();
+
 		//Setup the ships
 		//TODO: This is silly guys, stop hardcoding values. See above for my BRILLIANT fix for the spawner hardcoding. - Adam "The Magnificent" Stafford
 		i = -1;
@@ -93,7 +125,6 @@ public class GameManagement : MonoBehaviour {
 
 	//TODO:Currently does not include the GameObject array, since the spawners grab that in Start() right now
 	public void Setup(int[][] map, GameObject[] prefabs){
-//		Debug.Log(map[0][1]);
 		numLanes = map.Length;	//This will get the first dimensional length of the array, aka the height.
 		laneHeight = screenHeight / (float) numLanes;	//Set this again, since it has changed
 		//TODO: Do we ensure that the objects won't overlap if there are lots of lanes?
@@ -133,46 +164,28 @@ public class GameManagement : MonoBehaviour {
 	
 	private int[][] ParseFile(string fname){
 		int[][] ret;
-		try{
-		string line;
-		StreamReader theReader = new StreamReader(fname, Encoding.Default);
-		using (theReader){
-			int nPrefabs = Convert.ToInt32(theReader.ReadLine());
-			for(int i = 1; i < nPrefabs; i++){
-				
-				spawnablePrefabs[i] = Resources.Load("Spawnables/"+theReader.ReadLine ()) as GameObject;
-			}	
-			line = theReader.ReadLine();
-			int x = Convert.ToInt32(line);
-			line = theReader.ReadLine();
-			int y = Convert.ToInt32(line);
-			ret = new int[x][];
-			//Because this is the way jagged arrays work in C#, we have to declare them on separate lines.
-			for(int i=0; i<x;i++){
+		//Debug.Log(fname);
+		TextAsset file = Resources.Load("Maps/"+fname) as TextAsset;
+		string[] lines = file.text.Split('\n');
+		int nPrefabs = Convert.ToInt32(lines[0]);
+		for(int i = 1; i < nPrefabs; i++){				
+			spawnablePrefabs[i] = Resources.Load("Spawnables/"+lines[i]) as GameObject;
+		}
+		int x = Convert.ToInt32(lines[nPrefabs]);
+		int y = Convert.ToInt32(lines[nPrefabs+1]);
+		ret = new int[x][];
+		for(int i=0; i<x;i++){
 				ret[i] = new int[y];
+		}
+		for(int i = 0; i < x; i++){
+			string[] line = lines[i+nPrefabs+2].Split(' ');
+			for(int j = 0; j< y; j++){
+				ret[i][j] = Convert.ToInt32(line[j]); 
 			}
-			int j = 0;
-			do
-			{
-				line = theReader.ReadLine();
-				string[] split = line.Split(' ');
-				Debug.Log("Length of split at" + j +" is: " + split.Length);
-				for(int i = 0;i<y;i++){
-					int temp = Convert.ToInt32(split[i]);
-					ret[j][i]=temp;
-				}
-				j++;
-				
-			}
-			while (j<x);
-			
+		}
+		
 			return ret;
-		}
-	}
-		catch (FileNotFoundException ex){
-			Debug.Log("File not found");
-			return null;
-		}
+
 	} 
 	public void LevelEnded(){
 		Debug.Log ("spawning done");

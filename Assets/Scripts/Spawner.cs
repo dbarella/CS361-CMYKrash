@@ -11,7 +11,7 @@ public class Spawner : MonoBehaviour {
 	public bool isRandomSpawner;
 	int[] tickArray;	//The list to iterate through when not randomized
 	private int ticker = 0;	//The interal value determining where in the ticker this is.
-	
+	float[] probabilities;
 	//These variables are used only when random spawning is in effect
 	public float randMinTime;
 	public float randMaxTime;
@@ -22,6 +22,7 @@ public class Spawner : MonoBehaviour {
 	*Currently, there's no instantiation that needs to take place with this.
 	*/
 	void Start(){
+
 //		Debug.Log ("camera: "+Camera.main.GetComponent<GameManagement>());
 		objArr = Camera.main.GetComponent<GameManagement>().GetObjectArray();
 		timer = spawnTime;
@@ -33,10 +34,20 @@ public class Spawner : MonoBehaviour {
 	 */
 	void Update(){
 		//If using random spawning and spawn timer is 0, spawn something
-		if(timer <=0 && isRandomSpawner){
-			int randomObj = Random.Range(0, objArr.Length);
-			SpawnObject (objArr[randomObj]);
-			
+		if(timer <= 0 && isRandomSpawner){
+			float randomObj = Random.value;
+			int index = 0;
+
+			while(randomObj >= probabilities[index]){
+
+				randomObj -= probabilities[index];
+				index++;
+
+			}
+			index--;
+			if(index != 0){			
+				SpawnObject (objArr[index]);
+			}
 			//SpawnObject(prefabList[Random.Range(0, prefabList.Count -1)]);
 			timer = Random.Range(randMinTime, randMaxTime);
 		}
@@ -61,7 +72,7 @@ public class Spawner : MonoBehaviour {
 	 */
 	GameObject SpawnObject(GameObject o){
 	//Instantiate the chosen object at the spawner's position and direction.
-	return (GameObject)Instantiate(o, transform.position, transform.rotation);
+		return (GameObject)Instantiate(o, transform.position, transform.rotation);
 	}
 	public void SetRandom(bool isRandom) {
 		this.isRandomSpawner = isRandom;
@@ -69,7 +80,9 @@ public class Spawner : MonoBehaviour {
 	public void SetTickArray(int[] arr){
 		tickArray = arr;
 	}
-	
+	public void SetProbabilityArray(float[] f){
+		probabilities = f;
+	}
 	public int[] GetTickArray(){
 		return tickArray;
 	}
