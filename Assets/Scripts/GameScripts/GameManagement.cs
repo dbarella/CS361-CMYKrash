@@ -177,6 +177,7 @@ public class GameManagement : MonoBehaviour {
 		TextAsset file = Resources.Load("Maps/"+fname) as TextAsset;
 		string[] lines = file.text.Split('\n');
 		int nPrefabs = Convert.ToInt32(lines[0]);
+		spawnablePrefabs = new GameObject[nPrefabs];
 		for(int i = 1; i < nPrefabs; i++){				
 			spawnablePrefabs[i] = Resources.Load("Spawnables/"+lines[i]) as GameObject;
 		}
@@ -221,6 +222,24 @@ public class GameManagement : MonoBehaviour {
 		return ships;	
 	}
 	void OnGUI() {
+		/*GUI.BeginGroup (new Rect (3 * Screen.width / 4, 0, 100, 100));		
+			//GUI.Box (new Rect (0,0,100,100), "You lose.");
+
+			if(GUI.Button (new Rect(10,40,80,30),"Main Menu")){
+				Application.LoadLevel("Menu");
+			}
+		GUI.EndGroup ();
+		
+		GUI.BeginGroup (new Rect (Screen.width / 4, 0, 100, 100));		
+			//GUI.Box (new Rect (0,0,100,100), "You lose.");
+
+			if(GUI.Button (new Rect(10,40,80,30),"Pause")){
+				Time.timeScale = 0;
+			} else {
+				Time.timeScale = 1;
+			}*/
+		GUI.EndGroup ();
+		
 		if(won == true){
 			GUI.BeginGroup (new Rect (Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 100));		
 			GUI.Box (new Rect (0,0,100,100), "You won!");
@@ -238,7 +257,6 @@ public class GameManagement : MonoBehaviour {
 
 			if(GUI.Button (new Rect(10,40,80,30),"Main Menu")){
 					Application.LoadLevel("Menu");
-
 			}
 			GUI.EndGroup ();
 		}
