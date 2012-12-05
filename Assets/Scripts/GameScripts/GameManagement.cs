@@ -50,8 +50,10 @@ public class GameManagement : MonoBehaviour {
 			PassBetweenScenes pbs = go.GetComponent<PassBetweenScenes>();
 			Setup(pbs.getScene(),pbs.getSpawnables());
 		}
-		else //Setup(); //Sets up a random-spawning game.		
-		Setup("level");
+		else {
+			Setup(); //Sets up a random-spawning game.		
+			//Setup("level");
+		}
 	}
 	
 	// Update is called once per frame
@@ -79,9 +81,15 @@ public class GameManagement : MonoBehaviour {
 		//Setup the ships
 		//TODO: This is silly guys, stop hardcoding values. See above for my BRILLIANT fix for the spawner hardcoding. - Adam "The Magnificent" Stafford
 		i = -1;
+		float _tmpOffset = 0.0f;
 		foreach(GameObject ship in ships) {
 //			Debug.Log(shipPrefabs[i+1]);
-			ships[i+1] = Instantiate(shipPrefabs[i+1], new Vector3(shipSpawnOffset - screenWidth, (float)i * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
+			if(i==0) {
+				_tmpOffset = 30.0f;
+			} else {
+				_tmpOffset = 0.0f;
+			}
+			ships[i+1] = Instantiate(shipPrefabs[i+1], new Vector3(_tmpOffset + shipSpawnOffset - screenWidth, (float)i * laneHeight, -transform.position.z), Quaternion.identity) as GameObject;
 			i++;
 		}
 	}
