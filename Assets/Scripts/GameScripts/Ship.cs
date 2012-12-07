@@ -88,7 +88,7 @@ public class Ship : MonoBehaviour {
 			}
 		}
 		if(Input.GetKey ("d")){
-			if(transform.position.x < (mgmt.GetScreenWidth() / 2)){//this doesn't allow the player to go beyond halfway across the screen.
+			if(transform.position.x < (mgmt.GetScreenWidth())){//this doesn't allow the player to go beyond halfway across the screen.
 				transform.Translate(new Vector3(1,0,0)*Time.fixedDeltaTime*shipSpeed);	
 			}
 		}
@@ -131,9 +131,9 @@ public class Ship : MonoBehaviour {
 			shielded = false;//pop it
 		}else{//otherwise
 			health-=damage;//take the hit
-			Debug.Log (health);//log it
+//			Debug.Log (health);//log it
 			if(health<=0){//check to see if the ship needs to die,
-				Die(mgmt);//and kill it if it does
+				Die();//and kill it if it does
 			}
 		}
 	}
@@ -198,9 +198,9 @@ public class Ship : MonoBehaviour {
 	}
 	
 	//death function
-	public void Die(GameManagement mgmt) {
+	public void Die() {
 	
-		Debug.Log("ship is out of healths.  Calling mgmt.PlayerDead()");
+		Debug.Log(this.name + ": Calling mgmt.PlayerDead()");
 		mgmt.ShipDied();//Lets the GM know a ship is dead(do we care anymore?) /*Commented out by Emma for now as this method needs an int argument--which ship it is, I think?-- and if the ship knows this about itself, I can't find it. If this actually needs to be here, that'll need to be fixed for real.*/
 		Destroy(gameObject);//and destroys itself.
 		

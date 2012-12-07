@@ -9,7 +9,6 @@ public class Shield : PowerUp {
 	// Use this for initialization
 	void Start () {
 		gm = Camera.main.GetComponent<GameManagement>();
-		speedMult = 10.0f;
 		damage = 0.0f;
 		health = 1.0f;
 		laneChanging = false;
@@ -17,8 +16,8 @@ public class Shield : PowerUp {
 	}
 	
 	// Update is called once per frame
-	void Update () {//all update needs to do is move the shield to the left.
-		Move();
+	void FixedUpdate () {//all update needs to do is move the shield to the left.
+		base.Move();
 	}
 	
 	

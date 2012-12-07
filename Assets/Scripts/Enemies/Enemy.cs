@@ -23,6 +23,7 @@ public abstract class Enemy : Spawnable {
 		if(col.tag == "Ammo"){
 			temp = col.gameObject.GetComponent<Ammo>().GetDamage();
 			TakeDamage(temp);
+//			Debug.Log(gameObject.name+" took damage. Health = "+health);
 			if(health<=0){
 				Die();
 			}

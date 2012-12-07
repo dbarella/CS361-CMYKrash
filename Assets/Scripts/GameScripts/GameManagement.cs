@@ -32,6 +32,8 @@ public class GameManagement : MonoBehaviour {
 	public float randomModeSwitchTime;
 	private float randomModeTimer;
 	
+	private bool paused;
+	
 	// Use this for initialization
 	void Awake () {
 		//Height and Width in world units
@@ -44,6 +46,7 @@ public class GameManagement : MonoBehaviour {
 		lost = false;
 		randomGame = false;
 		spawningDone = false;
+		paused = false;
 //		Debug.Log("GameManagement calculated laneHeight: " + laneHeight + " world units");
 		
 		//These have been commented out because they belong in the various Setup methods.
@@ -59,6 +62,16 @@ public class GameManagement : MonoBehaviour {
 				Setup(pbs.getScene(),pbs.getSpawnables());
         }
         else Setup(); //Sets up a random-spawning game.
+	}
+	
+	void Update() {
+		if(Input.GetKeyDown(KeyCode.Escape) && !paused) {
+			Time.timeScale = 0;
+			paused = true;
+		} else if(Input.GetKeyDown(KeyCode.Escape) && paused) {
+			Time.timeScale = 1.0f;
+			paused = false;
+		}
 	}
 	
 	// Update is called once per frame
@@ -188,12 +201,10 @@ public class GameManagement : MonoBehaviour {
 				ret[i][j] = Convert.ToInt32(line[j]); 
 			}
 		}
-		
-			return ret;
-
+		return ret;
 	} 
 	public void LevelEnded(){
-		Debug.Log ("spawning done");
+//		Debug.Log ("spawning done");
 		spawningDone = true;
 		
 	}
@@ -234,6 +245,19 @@ public class GameManagement : MonoBehaviour {
 				Time.timeScale = 1;
 			}
 		GUI.EndGroup (); */
+		
+		if(paused == true){
+			GUI.BeginGroup (new Rect (Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 100));		
+			GUI.Box (new Rect (0,0,100,100), "Pause Menu");
+
+			if(GUI.Button (new Rect(10,40,80,30),"Main Menu")){
+				Time.timeScale = 1.0f;
+				paused = false;
+				Application.LoadLevel("Menu");
+			}
+			GUI.EndGroup ();
+
+		}
 		
 		if(won == true){
 			GUI.BeginGroup (new Rect (Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 100));		

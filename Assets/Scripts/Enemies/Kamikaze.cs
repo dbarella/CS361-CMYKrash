@@ -4,6 +4,7 @@ using System.Collections;
 public class Kamikaze : Enemy {
 	
 	public float bombingSpeed;
+	private bool locked = false;
 
 	// Use this for initialization
 	void Start () {
@@ -11,26 +12,35 @@ public class Kamikaze : Enemy {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if(health<=0){;
+				this.Die ();
+		}
 		Move ();
 	}
 	
 	new void OnTriggerEnter(Collider col){
-		float temp;
+		//float temp;
+		Debug.Log ("collision in Radar");
 		if(col.tag == "Player"){
-			Destroy (gameObject);
+			if(!locked){
+				TargetLocked();
+			}
 		}
 		if(col.tag == "Ammo"){
-			//Debug.Log ("Carrier hit by ammo");
-			temp = col.gameObject.GetComponent<Ammo>().GetDamage();
-			TakeDamage(temp);
-			if(health<=0){
-				Destroy(gameObject);
-			}
+			Debug.Log ("incoming");
 		}
 	}
 	
 	public void TargetLocked(){
+		locked = true;
 		this.laneChanging = false;
-		speedMult = bombingSpeed ;
+		speedMult = 10f ;
+		StartCoroutine(Lock());
+	}
+	
+	IEnumerator Lock(){
+		renderer.material.color = Color.red;
+		yield return new WaitForSeconds(0.5f);
+		speedMult=bombingSpeed;
 	}
 }

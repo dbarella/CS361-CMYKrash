@@ -67,8 +67,8 @@ public class CyanShipGUI : MonoBehaviour {
 //		Debug.Log (shipScreenPos);
 
         style.normal.background = texture;
-        GUI.Box(new Rect(Screen.width - Screen.width/1.7f, (Screen.height-Screen.height/13.5f), (Screen.height/18*curHealth), Screen.height/20), "", style);
+        GUI.Box(new Rect((Screen.width * .67f), (Screen.height* .92f), (Screen.height/18*curHealth), Screen.height/40), "", style);
 		style.normal.background = texture2;
-		GUI.Box (new Rect(Screen.width - Screen.width/2.6f, (Screen.height-Screen.height/13.5f), (Screen.height/20*curCool), Screen.height/20), "", style);
+		GUI.Box (new Rect((Screen.width * .67f), (Screen.height * .96f), (Screen.height/20*curCool), Screen.height/40), "", style);
 	}
 }
