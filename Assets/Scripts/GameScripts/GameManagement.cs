@@ -105,9 +105,9 @@ public class GameManagement : MonoBehaviour {
 		spawners = new GameObject[numLanes];
 		ships = new GameObject[numShips];
 		probabilitySections = new float[][] {
-			new float[] {0f, 0.5f, 0f, 0f, 0f, 0f, 0f, 0.5f},
-    		new float[] {0f, 0f, 0.5f, 0.5f, 0f, 0f, 0f, 0f},
-    		new float[] {0f, 0f, 0f, 0f, 0.5f, 0.5f, 0f, 0f}
+			new float[] {.142f, .142f, .142f, .142f, .142f, .142f, .142f},
+    		//new float[] {0f, 0f, 0.5f, 0.5f, 0f, 0f, 0f, 0f},
+    		//new float[] {0f, 0f, 0f, 0f, 0.5f, 0.5f, 0f, 0f}
 		};
 		randomGame = true;
 		randomModeTimer = randomModeSwitchTime;

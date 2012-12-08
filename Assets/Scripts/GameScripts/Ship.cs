@@ -39,6 +39,8 @@ public class Ship : MonoBehaviour {
 	private int shipInstance;
 	private bool laneSplit;
 	
+	private bool dead = false;
+	
 	// Use this for initialization
 	void Start () { 
 		//Source the Game Management
@@ -132,7 +134,8 @@ public class Ship : MonoBehaviour {
 		}else{//otherwise
 			health-=damage;//take the hit
 //			Debug.Log (health);//log it
-			if(health<=0){//check to see if the ship needs to die,
+			if(health<=0 && !dead){//check to see if the ship needs to die,
+				dead = true;
 				Die();//and kill it if it does
 			}
 		}

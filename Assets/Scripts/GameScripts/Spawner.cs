@@ -36,17 +36,29 @@ public class Spawner : MonoBehaviour {
 		//If using random spawning and spawn timer is 0, spawn something
 		if(timer <= 0 && isRandomSpawner){
 			float randomObj = Random.value;
+			//float randomObj = .00f;
 			int index = 0;
-
-			while(randomObj >= probabilities[index]){
+			
+			/*do {
 
 				randomObj -= probabilities[index];
-				index++;
+				index++;			
+				Debug.Log(index);
 
+			} while (randomObj >= probabilities[index]);
+			
+			while (randomObj/*-probabilities[index] >= probabilities[index]){
+				Debug.Log("RandomObj: " + randomObj + ". Difference: " + (randomObj-probabilities[index]));
+				randomObj -= probabilities[index];
+				index++;		
+			}*/
+			for(index = 0; index < probabilities.Length; index++){
+				if(randomObj <= probabilities[index]) break;
+				else randomObj -= probabilities[index];
 			}
-			index--;
-			if(index != 0 && index < objArr.Length){	
-				//Debug.Log(index);
+				
+			Debug.Log(index);
+			if(index != 0 /*&& index < objArr.Length*/){	
 				SpawnObject (objArr[index]);
 			}
 			//SpawnObject(prefabList[Random.Range(0, prefabList.Count -1)]);
