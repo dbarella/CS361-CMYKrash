@@ -27,4 +27,8 @@ public abstract class Ammo : MonoBehaviour {
 	public void Die(){
 		Destroy(gameObject);
 	}
+	
+	public void SetDamage(float d){
+		damage = d;
+	}
 }
