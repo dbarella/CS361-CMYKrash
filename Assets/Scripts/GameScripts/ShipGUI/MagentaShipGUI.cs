@@ -67,9 +67,9 @@ public class MagentaShipGUI : MonoBehaviour {
 		
         style.normal.background = texture;
 		//scale all of these to Screen height and Width
-        GUI.Box(new Rect(Screen.width - Screen.width/4f, (Screen.height-Screen.height/13.5f), (Screen.height/18*curHealth), Screen.height/20), "", style);
+        GUI.Box(new Rect((Screen.width * .35f), (Screen.height * .92f), (Screen.height/18*curHealth), Screen.height/40), "", style);
 		style.normal.background = texture2;
-		GUI.Box (new Rect(Screen.width - Screen.width/16f, (Screen.height-Screen.height/13.5f), (Screen.height/20*curCool), Screen.height/20), "", style);
+		GUI.Box (new Rect((Screen.width * .35f), (Screen.height * .96f), (Screen.height/20*curCool), Screen.height/40), "", style);
 	
 }
 }

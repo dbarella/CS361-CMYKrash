@@ -29,6 +29,6 @@ public class Explosion : Ammo {
 	}
 	
 	void OnTriggerEnter(Collider col){
-		Debug.Log ("Explosion hit: "+col.gameObject.tag);
+		//Debug.Log ("Explosion hit: "+col.gameObject.tag);
 	}
 }

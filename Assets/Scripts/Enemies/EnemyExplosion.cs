@@ -16,7 +16,7 @@ public class EnemyExplosion : Enemy {
 		GameManagement gm = Camera.main.GetComponent<GameManagement>();
 		float height = gm.GetLaneHeight();
 		//and set the radius of the collider to it
-		s.radius = height/(this.transform.localScale.x);
+		s.radius = 2*height/(this.transform.localScale.x);
 		
 		//Instantiate a detonator at this location
 		GameObject exp = Instantiate(detonator, transform.position, transform.rotation) as GameObject;
@@ -30,6 +30,6 @@ public class EnemyExplosion : Enemy {
 	}
 	
 	new void OnTriggerEnter(Collider col){
-		Debug.Log ("Explosion hit: "+col.gameObject.tag);
+		//Debug.Log ("Explosion hit: "+col.gameObject.tag);
 	}
 }

@@ -23,7 +23,7 @@ public class Bomb : Ammo {
 		}
 	}
 	void OnTriggerEnter(Collider other){
-		Debug.Log ("Bomb collided with " + other.tag);
+		//Debug.Log ("Bomb collided with " + other.tag);
 		if(other.gameObject.tag == "Enemy"){
 			Explode();
 		}

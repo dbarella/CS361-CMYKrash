@@ -51,7 +51,7 @@ public class Carrier : Enemy {
 			TakeDamage(temp);
 			if(health<=0){
 				Die ();
-				Debug.Log("dead");
+//				Debug.Log(this.name + ": Died.");
 			}
 		}
 	}

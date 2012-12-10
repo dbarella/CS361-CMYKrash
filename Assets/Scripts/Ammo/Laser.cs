@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Laser : Ammo {
+	public GameObject fizzle;
 	public GameManagement mgmt;
 	private float x;
 	private float width;
@@ -25,12 +26,13 @@ public class Laser : Ammo {
 	}
 	
 	IEnumerator WaitandDie(){
-		yield return new WaitForEndOfFrame();
+		Instantiate(fizzle,transform.position,Quaternion.identity);
+		yield return new WaitForSeconds(0.2f);
 		Die ();
 	}
 
 	void OnTriggerEnter(Collider col){
-		Debug.Log ("Laser collided with "+col.gameObject.tag);
+		//Debug.Log ("Laser collided with "+col.gameObject.tag);
 	}
 
 }

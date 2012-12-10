@@ -20,11 +20,15 @@ public abstract class Ammo : MonoBehaviour {
 	}
 	
 	public float GetDamage() {
-		Debug.Log ("GetDamage Called.  Returning: " + damage);
+//		Debug.Log ("GetDamage Called.  Returning: " + damage);
 		return damage;
 	}
 	
 	public void Die(){
 		Destroy(gameObject);
+	}
+	
+	public void SetDamage(float d){
+		damage = d;
 	}
 }

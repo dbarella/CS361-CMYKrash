@@ -4,13 +4,17 @@ using System.Collections;
 public class Planet : Enemy {
 	
 	private float _scaleFactor = 0.1f;
+	private Vector3 targetScale;
 	
 	public void Start() {
-		//speedMult = 10;	
+		Scale();
+
 	}
 	
 	void FixedUpdate () {
 		base.Move();
+		float mult = health/100;
+		transform.localScale = new Vector3(targetScale.x*mult,targetScale.y*mult,targetScale.z*mult);
 	}
 	
 /*	void OnTriggerEnter(Collider col){
@@ -29,7 +33,7 @@ public class Planet : Enemy {
 	
 	protected override void Scale(){
 		float laneHeight = gm.GetLaneHeight();
-		Vector3 targetScale = new Vector3(laneHeight - _scaleFactor, laneHeight - _scaleFactor, laneHeight - _scaleFactor);
+		targetScale = new Vector3(laneHeight - _scaleFactor, laneHeight - _scaleFactor, laneHeight - _scaleFactor);
 		transform.localScale = targetScale;
 	}
 	

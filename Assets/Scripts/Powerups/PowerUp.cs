@@ -8,7 +8,6 @@ public class PowerUp : Spawnable {
 	void Start () {
 		//initialize values for powerup
 		gm = Camera.main.GetComponent<GameManagement>();
-		speedMult = 10.0f;
 		damage = 0.0f;
 		health = 1.0f;
 		laneChanging = false;

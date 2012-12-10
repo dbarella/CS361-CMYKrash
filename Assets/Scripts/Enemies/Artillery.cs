@@ -4,6 +4,7 @@ using System.Collections;
 public class Artillery : Enemy {
 	
 	public  float setupPoint;	//given by the percentage offset from the left margin - 100 causes these to never move and begin firing immediately.
+	public GameObject firingExplosion;
 	public GameObject reticulePrefab;	//The "target", which spawns its own explosion after a timer.
 	public float firingInterval;	//The time between 
 	private float fireTimer;	//Internal cooldown timer on firing
@@ -29,6 +30,7 @@ public class Artillery : Enemy {
 					//put a reticule object there - It will detonate after a while.
 					Instantiate(reticulePrefab, tar, Quaternion.identity);
 					fireTimer = firingInterval;
+					Instantiate(firingExplosion,new Vector3(transform.position.x,transform.position.y,0),Quaternion.identity);
 			}
 		}
 		if(fireTimer > 0)

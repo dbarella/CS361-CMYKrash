@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class Radar : MonoBehaviour {
+//The collider attached to this object, known as the Hull, will call the die method on it's parent on collision with the player
+
+public class Radar : Kamikaze {
 	// Use this for initialization
 	void Start () {
-		Debug.Log (transform.parent.name);
+//		Debug.Log (transform.parent.name);
 	
 	}
 	
@@ -15,7 +17,13 @@ public class Radar : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider col){
 		if(col.tag == "Player"){
-			transform.parent.GetComponent<Kamikaze>().TargetLocked();
+			Kamikaze kami = transform.parent.GetComponent<Kamikaze>();
+			kami.Die();
+		}
+		if(col.tag == "Ammo"){
+			Kamikaze kami = transform.parent.GetComponent<Kamikaze>();
+			float temp = col.gameObject.GetComponent<Ammo>().GetDamage();
+			kami.TakeDamage(temp);
 		}
 	}
 }
