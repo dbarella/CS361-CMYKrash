@@ -169,7 +169,7 @@ public class Ship : MonoBehaviour {
 	
 	public void OnTriggerEnter(Collider other) {
 		Debug.Log ("ship: "+other.tag);
-		if(other.gameObject.CompareTag("Enemy")||other.gameObject.CompareTag("Bullet")) {
+		if(other.gameObject.CompareTag("Enemy")||other.gameObject.CompareTag("EnemyBullet")) {
 			TakeDamage(other.gameObject.GetComponent<Spawnable>().GetDamage());
 		}
 		if(other.gameObject.CompareTag("PowerUp")) {//otherwise, if we have a powerup,

@@ -105,7 +105,7 @@ public class GameManagement : MonoBehaviour {
 		spawners = new GameObject[numLanes];
 		ships = new GameObject[numShips];
 		probabilitySections = new float[][] {
-			new float[] {.142f, .142f, .142f, .142f, .142f, .142f, .142f},
+			new float[] {1/8.0f, 1/8.0f, 1/8.0f, 1/8.0f, 1/8.0f, 1/8.0f, 1/8.0f, 1/8.0f},
     		//new float[] {0f, 0f, 0.5f, 0.5f, 0f, 0f, 0f, 0f},
     		//new float[] {0f, 0f, 0f, 0f, 0.5f, 0.5f, 0f, 0f}
 		};

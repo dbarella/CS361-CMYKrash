@@ -5,16 +5,21 @@ public class Planet : Enemy {
 	
 	private float _scaleFactor = 0.1f;
 	private Vector3 targetScale;
-	
+	private float lowerbound;
+	private float totalhealth, totaldamage;
 	public void Start() {
 		Scale();
-
+		lowerbound = targetScale.x/2;
+		totalhealth = health;
+		totaldamage = damage;
 	}
 	
 	void FixedUpdate () {
 		base.Move();
-		float mult = health/100;
-		transform.localScale = new Vector3(targetScale.x*mult,targetScale.y*mult,targetScale.z*mult);
+		float mult = health/totalhealth; 
+		transform.localScale = new Vector3(targetScale.x*mult/2+lowerbound,targetScale.y*mult/2+lowerbound,targetScale.z*mult/2+lowerbound);
+		damage = totaldamage * health/totalhealth;
+		Debug.Log (damage+" "+health);
 	}
 	
 /*	void OnTriggerEnter(Collider col){
@@ -30,7 +35,7 @@ public class Planet : Enemy {
 			}
 		}
 	}*/
-	
+
 	protected override void Scale(){
 		float laneHeight = gm.GetLaneHeight();
 		targetScale = new Vector3(laneHeight - _scaleFactor, laneHeight - _scaleFactor, laneHeight - _scaleFactor);
