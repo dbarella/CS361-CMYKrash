@@ -57,7 +57,7 @@ public class Spawner : MonoBehaviour {
 				else randomObj -= probabilities[index];
 			}
 				
-			Debug.Log(index);
+			//Debug.Log(index);
 			if(index != 0 && index < objArr.Length){	
 				SpawnObject (objArr[index]);
 			}
