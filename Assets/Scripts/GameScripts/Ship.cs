@@ -168,7 +168,8 @@ public class Ship : MonoBehaviour {
 	}
 	
 	public void OnTriggerEnter(Collider other) {
-		if(other.gameObject.CompareTag("Enemy")) {
+		Debug.Log ("ship: "+other.tag);
+		if(other.gameObject.CompareTag("Enemy")||other.gameObject.CompareTag("Bullet")) {
 			TakeDamage(other.gameObject.GetComponent<Spawnable>().GetDamage());
 		}
 		if(other.gameObject.CompareTag("PowerUp")) {//otherwise, if we have a powerup,
@@ -177,7 +178,7 @@ public class Ship : MonoBehaviour {
 				Debug.Log (this.name + ": Shielded");
 				shielded = true;//turn on shield
 			}else{//otherwise, it has to be a powershot
-				Debug.Log(this.name + ": Sowershot");
+				Debug.Log(this.name + ": Powershot");
 				this.GetComponent<Weapon>().SetPowerShot();
 			}
 		}
