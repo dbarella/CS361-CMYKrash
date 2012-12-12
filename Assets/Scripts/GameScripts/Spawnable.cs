@@ -6,10 +6,10 @@ public abstract class Spawnable : MonoBehaviour {
 	public float health;
 	public float damage;
 	public GameManagement gm;
-	public bool laneChanging;
-	public float amtMoved;
-	public float laneHeight;
-	public int direction;
+	protected bool laneChanging;
+	protected float amtMoved;
+	protected float laneHeight;
+	protected int direction;
 	void Awake(){
 		gm = Camera.main.GetComponent<GameManagement>();
 		laneChanging = false;
