@@ -4,16 +4,17 @@ using System.Collections;
 public class YAM : Weapon{
 
 	public float maxChargeTime = 5;
+	public float maxCharge = 40;
 	public float dps = 30;
 	private float chargeTime = 0;
 	
 	void Start () {}
 
 	new public void Update () {
-		if(Input.GetButton(buttonPress) && chargeTime <= maxChargeTime) {
+		if(/*Input.GetButton(buttonPress) && */chargeTime <= maxChargeTime) {
 			chargeTime += Time.deltaTime;
 		}
-		if(Input.GetButtonUp(buttonPress) && cooldown <=0){
+		if(Input.GetButtonDown(buttonPress) && cooldown <=0){
 			StandardShot();
 			chargeTime = 0;
 		}
