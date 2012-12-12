@@ -2,14 +2,15 @@ using UnityEngine;
 using System.Collections;
 
 public class ShootingEnemy : Enemy {
-	public bool forward, laneChange, backwards;
+	
 	public int travelDirection;
 	public int lanesChanged, cycles;
 	public float travelDistance;
 	public GameObject bullet;
 	private float initalPos;
 	private int lanechangecounter;
-	// Use this for initialization
+	private bool forward, laneChange, backwards;
+	
 	void Start(){	
 		initalPos = transform.position.x;
 		lanechangecounter = 0;
@@ -19,7 +20,7 @@ public class ShootingEnemy : Enemy {
 	void Update(){
 		Move ();
 	}
-	public void Move () {
+	new public void Move () {
 		if(forward){
 			//Debug.Log("forward");
 			base.Move();
