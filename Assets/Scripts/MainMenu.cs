@@ -56,6 +56,9 @@ public class MainMenu : MonoBehaviour {
 					Application.LoadLevel("Game");
 				}
 			}
+			if(GUI.Button(new Rect(10,5,100,40),"Main Menu")) {
+				levelSelect = false;
+			}
 			//new Rect(50,(50+25i),(75+25i),80)
 		}
 		
