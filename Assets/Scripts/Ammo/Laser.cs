@@ -4,6 +4,7 @@ using System.Collections;
 public class Laser : Ammo {
 	public GameObject fizzle;
 	public GameManagement mgmt;
+	public float scaleCoef = 0.05F;
 	private float x;
 	private float width;
 
@@ -12,6 +13,9 @@ public class Laser : Ammo {
 		mgmt = Camera.main.GetComponent<GameManagement>();
 		width = mgmt.GetScreenWidth();
 		//okay
+		//Modify the width of the laser based on the damage it's going to deal.
+		float f = (0.5f*(scaleCoef * damage));
+		transform.localScale *= f;
 		x = (transform.position.x+(width/3));
 		//On startup, immediately shift forward so the edge will be on the ship, rather than the laser being half forward and half backwards.
 		//transform.Translate(new Vector3(-x-x/5, 0, 0));
