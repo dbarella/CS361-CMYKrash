@@ -5,6 +5,8 @@ using System.IO;
 public class MainMenu : MonoBehaviour {
 	private string selectedLevel;
 	private string[] levels;
+	private bool levelSelect;
+	private int rowHeight;
 	public GameObject levelDataPrefab; 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +17,8 @@ public class MainMenu : MonoBehaviour {
 		levels = new string[files.Length];
 		for(int i=0;i<levels.Length;i++)
 			levels[i] = files[i].name;
+		levelSelect = false;
+		rowHeight = 14;
 	}
 	
 	// Update is called once per frame
@@ -23,28 +27,38 @@ public class MainMenu : MonoBehaviour {
 	}
 	
 	public void OnGUI() {
-		if(GUI.Button(new Rect(10,50,100,40),"Play Game")) {
-			Debug.Log("Playing Game");
-			Die ();
-			Application.LoadLevel("Game");
-		}
-		if(GUI.Button(new Rect(10,100,100,40),"Level Editor")) {
-			Debug.Log("Loading Level Editor");
-			Application.LoadLevel("Editor");
-		}
-		if(GUI.Button(new Rect(10,150,100,40),"Quit Game")) {
-			Debug.Log("Quitting Game");
-			Application.Quit();
-		}
-		for(int i = 0; i < levels.Length; i++){
-			if(GUI.Button(new Rect(150,(50+25*i),100,25),levels[i])) {
-				Debug.Log("Selected level: " + levels[i]);
-				selectedLevel = (levels[i].Split('.'))[0];
+		if(!levelSelect){
+			if(GUI.Button(new Rect(10,50,100,40),"Play Game")) {
+				Debug.Log("Playing Game");
 				Die ();
 				Application.LoadLevel("Game");
-			}	
+			}
+			if(GUI.Button(new Rect(10,100,100,40),"Select Levels")) {
+				Debug.Log("Loading Level Select");
+				levelSelect = true;
+				//Application.LoadLevel("LevelSelect");
+			}
+			if(GUI.Button(new Rect(10,150,100,40),"Level Editor")) {
+				Debug.Log("Loading Level Editor");
+				Application.LoadLevel("Editor");
+			}
+			if(GUI.Button(new Rect(10,200,100,40),"Quit Game")) {
+				Debug.Log("Quitting Game");
+				Application.Quit();
+			}
+		}
+		else{
+			for(int i = 0; i < levels.Length; i++){
+				if(GUI.Button(new Rect(10+100*((int)i/14),(50+25*i)-((int)i/14)*350,100,25),levels[i])) {
+					Debug.Log("Selected level: " + levels[i]);
+					selectedLevel = (levels[i].Split('.'))[0];
+					Die ();
+					Application.LoadLevel("Game");
+				}
+			}
 			//new Rect(50,(50+25i),(75+25i),80)
 		}
+		
 
 	}
 	
