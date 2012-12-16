@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour {
 	}
 	
 	public void OnGUI() {
-		if(!levelSelect){
+		if(!levelSelect){ //Intro Screen
 			if(GUI.Button(new Rect(10,50,100,40),"Play Game")) {
 				Debug.Log("Playing Game");
 				Die ();
@@ -47,7 +47,7 @@ public class MainMenu : MonoBehaviour {
 				Application.Quit();
 			}
 		}
-		else{
+		else{ //Level Select Screen
 			for(int i = 0; i < levels.Length; i++){
 				if(GUI.Button(new Rect(10+100*((int)i/14),(50+25*i)-((int)i/14)*350,100,25),levels[i])) {
 					Debug.Log("Selected level: " + levels[i]);
@@ -56,7 +56,7 @@ public class MainMenu : MonoBehaviour {
 					Application.LoadLevel("Game");
 				}
 			}
-			if(GUI.Button(new Rect(10,5,100,40),"Main Menu")) {
+			if(GUI.Button(new Rect(10,5,100,40),"Main Menu")) { //Return to Main Menu
 				levelSelect = false;
 			}
 			//new Rect(50,(50+25i),(75+25i),80)
