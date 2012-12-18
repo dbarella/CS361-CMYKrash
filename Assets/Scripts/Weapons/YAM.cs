@@ -7,8 +7,10 @@ public class YAM : Weapon{
 	public float maxCharge = 40;
 	public float dps = 30;
 	private float chargeTime = 0;
+	public ParticleSystem charge;
 	
-	void Start () {}
+	void Start () {
+	}
 
 	new public void Update () {
 		if(/*Input.GetButton(buttonPress) && */chargeTime <= maxChargeTime) {
@@ -25,11 +27,13 @@ public class YAM : Weapon{
 	
 	new public void StandardShot(){
 		//Instantiate a shot, pointing the same direction as the shooter.
+		audio.PlayOneShot(firingSound);
 		float d = chargeTime*dps;
 		GameObject o = Instantiate(ammo, this.transform.position + 10*Vector3.right, Quaternion.identity) as GameObject;
 		o.GetComponent<Ammo>().SetDamage(d);
 		//Debug.Log(d);
 		cooldown = cdtime;
+		//Charge back up
 	}
 
 	override public void PowerShot(){

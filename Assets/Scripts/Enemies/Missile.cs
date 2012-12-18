@@ -7,8 +7,14 @@ public class Missile : Enemy {
 	
 	private float _timer;
 	
+	public AudioClip clip;
+	public GameObject explosion;
+	
 	void Start () {
 		//base.speedMult = 50;
+		//deathBlip = GetComponent<AudioSource>();
+		deathClip = clip;
+		explosionPrefab = explosion;
 	}
 	
 	void FixedUpdate () {
@@ -22,6 +28,12 @@ public class Missile : Enemy {
 //			Debug.Log("Reset Timer");
 			ChangeLane( Random.Range(-1,2) ); //Generate a random into to change lanes
 		}
+	}
+	
+	new void Die(){
+		Debug.Log("missile died!");
+		GetComponent<Rigidbody>().useGravity = true;
+		explosionPrefab = Instantiate(explosionPrefab,transform.position,Quaternion.identity) as GameObject;
 	}
 	
 	/*void OnTriggerEnter(Collider col){

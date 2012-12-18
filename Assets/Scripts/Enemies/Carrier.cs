@@ -3,17 +3,23 @@ using System.Collections;
 
 public class Carrier : Enemy {
 	//a fine piece of craftsmanship
+	
 
-	public GameObject explosion;
 	public GameObject buzzard;
 	public float launchInterval;
 	public float launchDist;
 	
 	private float timer;
-
+	
+	public AudioClip clip;
+	public GameObject explosion;
+	
 	// Use this for initialization
 	void Start () {
 		timer = launchInterval;
+		//deathBlip = GetComponent<AudioSource>();
+		deathClip = clip;
+		explosionPrefab = explosion;
 	}
 	
 	// Update is called once per frame
@@ -56,9 +62,6 @@ public class Carrier : Enemy {
 		}
 	}
 	
-	new void Die(){
-		//would love to do death animation
-		Destroy(gameObject);
-	}
+	
 }
 	

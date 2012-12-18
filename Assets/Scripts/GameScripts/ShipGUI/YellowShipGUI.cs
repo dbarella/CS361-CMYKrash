@@ -65,8 +65,8 @@ public class YellowShipGUI : MonoBehaviour {
 //		Debug.Log (shipScreenPos);
 
         style.normal.background = texture;
-        GUI.Box(new Rect((Screen.width * .03f), (Screen.height* .92f), (Screen.height/18*curHealth), Screen.height/40), "", style);
+        GUI.Box(new Rect((Screen.width * .03f), (Screen.height* .96f), (Screen.height/18*curHealth), Screen.height/40), "", style);
 		style.normal.background = texture2;
-		GUI.Box (new Rect((Screen.width * .03f), (Screen.height* .96f), (Screen.height/20*curCool), Screen.height/40), "", style);
+		GUI.Box (new Rect((Screen.width * .03f), (Screen.height* .92f), (Screen.height/4*curCool), Screen.height/40), "", style);
 	}
 }

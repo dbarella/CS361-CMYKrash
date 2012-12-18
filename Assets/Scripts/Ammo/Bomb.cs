@@ -2,12 +2,13 @@ using UnityEngine;
 using System.Collections;
 
 public class Bomb : Ammo {
+	public float offset;
 	private float halfScreen;
 	private float initPosit;
 	public GameObject explosionPrefab;
 	void Start(){
 		GameManagement gm = Camera.main.GetComponent<GameManagement>();
-		halfScreen = gm.GetScreenWidth()/2.0f;
+		halfScreen = gm.GetScreenWidth()/2.0f + gm.GetScreenWidth()*offset;
 		initPosit = transform.position.x;
 		
 	}
@@ -38,7 +39,7 @@ public class Bomb : Ammo {
 				s.TakeDamage(damage);
 			}
 		}*/
-		explosionPrefab = Instantiate(explosionPrefab, transform.position, transform.rotation) as GameObject;
+		explosionPrefab = Instantiate(explosionPrefab, transform.position, explosionPrefab.transform.rotation) as GameObject;
 		StartCoroutine(Wait());
 		//time to die
 		Die();

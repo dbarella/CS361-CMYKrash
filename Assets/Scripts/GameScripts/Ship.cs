@@ -8,13 +8,19 @@ public class Ship : MonoBehaviour {
 	
 	/* SCRIPT REFERENCES */
 	
+	public GameObject explosion;
+	private AudioSource audioSource;
+	public AudioClip deathBlip;
+	public float deathBlipVolume = 0.5f;
+	private ParticleSystem shieldAnim; //shield charge up particle system
+	public AudioClip shieldBlip;
+	public float shieldBlipVolume = 0.5f;
+	
+	public Texture2D inPain;
+	public Texture2D aOk;
+	
 	protected GameManagement mgmt;//GameManagement
 	protected Weapon weapon;//attached weapon
-	
-	/* GAMEOBJECTS */
-	
-	public GameObject explosion; //for a later implementation, an explosion upon death
-	public GameObject shield; //I think I need this?  Or am I crazy?
 		
 	/* VARIABLES */
 	
@@ -29,11 +35,10 @@ public class Ship : MonoBehaviour {
 	protected float amtMoved;
 	protected bool laneChanging;
 	protected int direction;
-	//public int curLane; //this should be set in GameManagement upon instantiation.
 	
 	//powerup bools (both start as false)
 	private bool shielded = false;
-	private bool powerShot = false;
+	private bool powerShot = false; //I guess we never did get around to power shot, did we? Well maybe one day we can come back. This isn't a bad idea -js
 	
 	//Prototype vars
 	private int shipInstance;
@@ -43,6 +48,10 @@ public class Ship : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () { 
+		//sheild animation particle system
+		shieldAnim = GetComponent<ParticleSystem>();
+		//Source audio
+		audioSource = GetComponent<AudioSource>();
 		//Source the Game Management
 		mgmt = Camera.main.GetComponent<GameManagement>();
 		//storing laneheight for future use
@@ -76,9 +85,6 @@ public class Ship : MonoBehaviour {
 		}
 		//Lane Spread Toggle
 		else if (Input.GetKeyDown("space") && shipInstance != 0) {
-//			Debug.Log(laneSplit);
-/*			ChangeLanes(!laneSplit && shipInstance!=0 ? shipInstance : -shipInstance);
-			laneSplit = !laneSplit; */
 			if(!laneSplit) {
 				direction = shipInstance;
 				ChangeLanes(shipInstance);
@@ -126,14 +132,14 @@ public class Ship : MonoBehaviour {
 	}
 
 
-	
-	
+
 	public void TakeDamage(float damage){
 		if(shielded){//If we have a shield
 			shielded = false;//pop it
 		}else{//otherwise
 			health-=damage;//take the hit
 //			Debug.Log (health);//log it
+			StartCoroutine(Ouch(3));
 			if(health<=0 && !dead){//check to see if the ship needs to die,
 				dead = true;
 				Die();//and kill it if it does
@@ -168,7 +174,6 @@ public class Ship : MonoBehaviour {
 	}
 	
 	public void OnTriggerEnter(Collider other) {
-		Debug.Log ("ship: "+other.tag);
 		if(other.gameObject.CompareTag("Enemy")||other.gameObject.CompareTag("EnemyBullet")) {
 			TakeDamage(other.gameObject.GetComponent<Spawnable>().GetDamage());
 		}
@@ -176,7 +181,7 @@ public class Ship : MonoBehaviour {
 			Debug.Log (this.name + ": Powerup");
 			if(other.gameObject.GetComponent<PowerUp>().IsShield()) { //if it's a shield
 				Debug.Log (this.name + ": Shielded");
-				shielded = true;//turn on shield
+				StartCoroutine(Shield());
 			}else{//otherwise, it has to be a powershot
 				Debug.Log(this.name + ": Powershot");
 				this.GetComponent<Weapon>().SetPowerShot();
@@ -201,11 +206,35 @@ public class Ship : MonoBehaviour {
 		shipInstance = i;
 	}
 	
+	//damage animation
+	IEnumerator Ouch(int i){
+		/*if(i==0){
+			Debug.Log ("retungin");
+			return true; 
+		}*/
+		renderer.material.SetTexture("_MainTex",inPain);
+		yield return new WaitForSeconds(0.2f);
+		renderer.material.SetTexture("_MainTex" ,aOk);
+		Ouch (i--);
+		
+	}
+	
+	//shield animation
+	IEnumerator Shield(){
+		
+		if(shieldAnim != null){
+			shieldAnim.Play(); //play shield sharge up animation
+			audio.PlayOneShot(shieldBlip,shieldBlipVolume);
+		}
+		yield return new WaitForSeconds(1.0f);
+		shielded = true;//turn on shield
+	}
+	
 	//death function
 	public void Die() {
-	
-		Debug.Log(this.name + ": Calling mgmt.PlayerDead()");
+		audio.PlayOneShot(deathBlip,deathBlipVolume); //for some reason, not working. It knows the audio clip... -js
 		mgmt.ShipDied();//Lets the GM know a ship is dead(do we care anymore?) /*Commented out by Emma for now as this method needs an int argument--which ship it is, I think?-- and if the ship knows this about itself, I can't find it. If this actually needs to be here, that'll need to be fixed for real.*/
+		explosion = Instantiate(explosion,transform.position,Quaternion.identity) as GameObject;
 		Destroy(gameObject);//and destroys itself.
 		
 	}

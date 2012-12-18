@@ -8,6 +8,8 @@ public abstract class Weapon : MonoBehaviour {
 	protected float cooldown;	//Internal counter for shot cooldown.
 	public string buttonPress;
 	public bool isPowerShot = false;
+	public AudioClip firingSound; //audio firing clip
+	public float volume=0.5f;
 	
 	// Use this for initialization
 	void Start () {
@@ -26,6 +28,8 @@ public abstract class Weapon : MonoBehaviour {
 	}
 	
 	public void StandardShot(){
+		//firing!
+		audio.PlayOneShot(firingSound);
 		//Instantiate a shot, pointing the same direction as the shooter.
 		GameObject o = Instantiate(ammo, this.transform.position + 10*Vector3.right, Quaternion.identity) as GameObject;
 		cooldown = cdtime;

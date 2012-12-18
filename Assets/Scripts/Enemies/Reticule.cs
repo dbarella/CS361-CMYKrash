@@ -12,8 +12,8 @@ public class Reticule : Enemy {
 	void FixedUpdate(){
 
 		if(countDown <= 0.0f){
-			enemyExplosion = Instantiate(enemyExplosion, transform.position, transform.rotation) as GameObject;
-			this.Die();	
+			GameObject e = Instantiate(enemyExplosion, transform.position, transform.rotation) as GameObject;
+			Destroy(gameObject);	
 		}else{
 			countDown -= Time.fixedDeltaTime;
 		}

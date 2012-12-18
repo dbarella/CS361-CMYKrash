@@ -36,4 +36,9 @@ public class EnemyExplosion : Enemy {
 	new void OnTriggerEnter(Collider col){
 		//Debug.Log ("Explosion hit: "+col.gameObject.tag);
 	}
+	
+	new void Die(){
+		audio.PlayOneShot(deathClip, deathClipVolume);
+		Destroy(gameObject);
+	}
 }

@@ -19,7 +19,6 @@ public class Planet : Enemy {
 		float mult = health/totalhealth; 
 		transform.localScale = new Vector3(targetScale.x*mult/2+lowerbound,targetScale.y*mult/2+lowerbound,targetScale.z*mult/2+lowerbound);
 		damage = totaldamage * health/totalhealth;
-		Debug.Log (damage+" "+health);
 	}
 	
 /*	void OnTriggerEnter(Collider col){

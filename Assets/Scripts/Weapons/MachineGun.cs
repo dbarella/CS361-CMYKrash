@@ -39,7 +39,7 @@ public class MachineGun : Weapon {
 		//GameObject o = Instantiate(ammo, this.transform.position + 10*Vector3.right, Quaternion.identity) as GameObject;
 		//o.transform.Rotate(Vector3.forward,(Random.Range (-angle, angle)),Space.World);
 		//End cone fire pattern
-		
+		audio.PlayOneShot(firingSound);
 		for(int i=-splay; i<=splay; i++) {
 			GameObject o = Instantiate(ammo, this.transform.position + 10*Vector3.right, Quaternion.identity) as GameObject;
 			o.transform.Rotate(Vector3.forward,(float)i * angle,Space.World);

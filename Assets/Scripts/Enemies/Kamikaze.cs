@@ -7,12 +7,20 @@ public class Kamikaze : Enemy {
 	public float range;
 	public float bombingSpeed;
 	
+	public AudioClip deathSound;
+	public float dVolume;
+	public Texture2D ballisticsEngaged;
+	public AudioClip speedUpClip;
+	public float suVolume;
+	
 	private GameObject[] ships;
 	private bool locked;
 	private bool adjustingSpeed;
 	private float _threshold = 0.2f;
 	
 	void Start () {
+		//deathBlip = GetComponent<AudioSource>();
+		deathClip = deathSound;
 		ships = GameObject.FindGameObjectsWithTag("Player");
 		locked = false;
 	}
@@ -41,7 +49,8 @@ public class Kamikaze : Enemy {
 	
 	IEnumerator Lock(){
 		//Change color to red
-		renderer.material.color = Color.red;
+		renderer.material.SetTexture("_MainTex",ballisticsEngaged);
+		audio.PlayOneShot(speedUpClip,suVolume);
 		
 		//Freeze movement for a short time
 		adjustingSpeed = true;

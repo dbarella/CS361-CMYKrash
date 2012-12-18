@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Cannon : Weapon {
+	
 
 	// Use this for initialization
 	void Start () {

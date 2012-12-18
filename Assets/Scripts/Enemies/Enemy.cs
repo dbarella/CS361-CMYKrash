@@ -3,7 +3,10 @@ using System.Collections;
 
 public abstract class Enemy : Spawnable {
 	
-	//GameObject explosionPrefab;
+	public GameObject explosionPrefab;
+	protected AudioSource deathBlip;
+	public AudioClip deathClip;
+	public float deathClipVolume;
 
 	// Use this for initialization
 	void Start () {
@@ -30,8 +33,29 @@ public abstract class Enemy : Spawnable {
 		}
 	}
 	new public void Die() {
+		//First, send the score value
+		SendScore();
+		//Animate Death Function
+		
 //		explosionPrefab = Instantiate(explosionPrefab, transform.position, transform.rotation) as GameObject;
+		if(explosionPrefab != null){
+		explosionPrefab = Instantiate(explosionPrefab,transform.position,Quaternion.identity) as GameObject;
+		StartCoroutine(WaitandDestroy(explosionPrefab,4));}
+		else{
+			Debug.Log (gameObject.name+" Does not have an explosion");}
+		if(deathClip != null){
+			audio.PlayOneShot(deathClip, deathClipVolume);
+			Debug.Log (gameObject.name + " has played deathClip");
+		}
+		else{
+			Debug.Log (gameObject.name+" does not have an audio clip/");
+		}
 		Destroy(gameObject);
+	}
+	
+	IEnumerator WaitandDestroy(GameObject o, int n){
+		yield return new WaitForSeconds(n);
+		Destroy(o);
 	}
 	
 }

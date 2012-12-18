@@ -3,11 +3,12 @@ using System.Collections;
 
 public abstract class Ammo : MonoBehaviour {
 	
+	public float zOffset;
 	public float damage;
 	public float speed;
 	
 	void Start () {
-	
+		MoveOffset();
 	}
 	
 	void FixedUpdate () {
@@ -31,4 +32,8 @@ public abstract class Ammo : MonoBehaviour {
 	public void SetDamage(float d){
 		damage = d;
 	}
+	public void MoveOffset(){
+		transform.Translate(new Vector3(0,0,zOffset));
+	}
 }
+

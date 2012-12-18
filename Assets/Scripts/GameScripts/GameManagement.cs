@@ -12,9 +12,15 @@ public class GameManagement : MonoBehaviour {
 	public GameObject spawnerPrefab;
 	public float[][] probabilitySections;
 	
+	public bool renderLanes;
+	
 	public int numLanes = 7;
 	public int numShips = 3;
 	public float gameSpeed = 0.5f;
+	
+	//for drawing the lanes
+	protected GUIStyle style;
+    protected Texture2D texture;
 	
 	private float laneHeight;
 	private float screenHeight;
@@ -26,6 +32,7 @@ public class GameManagement : MonoBehaviour {
 	private GameObject[] spawners;
 	private GameObject[] ships;
 	
+	private int score = 0;
 	private bool won, lost, spawningDone;
 	private int shipsLeft;
 	private bool randomGame;
@@ -36,12 +43,37 @@ public class GameManagement : MonoBehaviour {
 	
 	// Use this for initialization
 	void Awake () {
+		//creating textures for drawing the lanes
+		/*texture = new Texture2D(128, 128,TextureFormat.RGB24,false);
+		style = new GUIStyle();
+		for (int y = 0; y < texture.height; ++y)
+        {
+            for (int x = 0; x < texture.width; ++x)
+            {
+                Color color = new Color(246, 234, 219);
+                texture.SetPixel(x, y, color);
+            }
+        }
+        texture.Apply();*/
 		//Height and Width in world units
 		Vector3 hnw = camera.ScreenToWorldPoint(new Vector3(Screen.width,Screen.height,camera.nearClipPlane));
 		screenHeight = hnw.y  * 2.0f;
 		screenWidth = hnw.x;
 		shipsLeft = numShips;
 		laneHeight = screenHeight / (float) numLanes;
+		
+		if(renderLanes){
+		for(int i = 0;i<(numLanes-1)/2;i++){
+			GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			cube.transform.position = new Vector3(0,laneHeight*0.5f+i*laneHeight,15);
+			cube2.transform.position = new Vector3(0,(-laneHeight*0.5f)+(-i*laneHeight),15);
+			cube.transform.localScale = new Vector3(screenWidth*2.0f,screenHeight/300,1);
+			cube2.transform.localScale = new Vector3(screenWidth*2.0f,screenHeight/300,1);
+		}
+		}
+		
+		
 		won = false;
 		lost = false;
 		randomGame = false;
@@ -228,6 +260,7 @@ public class GameManagement : MonoBehaviour {
 		return ships;	
 	}
 	void OnGUI() {
+		GUI.Label (new Rect(10,10,100,20), "Score: " + score);
 		/*GUI.BeginGroup (new Rect (3 * Screen.width / 4, 0, 100, 100));		
 			//GUI.Box (new Rect (0,0,100,100), "You lose.");
 
@@ -245,6 +278,12 @@ public class GameManagement : MonoBehaviour {
 				Time.timeScale = 1;
 			}
 		GUI.EndGroup (); */
+		/*style.normal.background = texture;
+		float topNinety = Screen.width*0.9f;
+		GUI.Box (new Rect(Screen.width*0.5f,topNinety,Screen.width,Screen.height*0.01f),"",style);
+		for(int i = 1; i<=numLanes;i++){
+			
+		}*/
 		
 		if(paused == true){
 			GUI.BeginGroup (new Rect (Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 100));		
@@ -279,5 +318,9 @@ public class GameManagement : MonoBehaviour {
 			}
 			GUI.EndGroup ();
 		}
+	}
+	
+	public void IncrementScore(int s){
+		score += s;
 	}
 }

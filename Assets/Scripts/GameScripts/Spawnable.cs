@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class Spawnable : MonoBehaviour {
+	public float zOffset;
 	public float speedMult;
 	public float health;
 	public float damage;
@@ -10,10 +11,12 @@ public abstract class Spawnable : MonoBehaviour {
 	protected float amtMoved;
 	protected float laneHeight;
 	protected int direction;
+	public int score = 0;
 	void Awake(){
 		gm = Camera.main.GetComponent<GameManagement>();
 		laneChanging = false;
 		laneHeight = gm.GetLaneHeight();
+		MoveOffset();
 	}
 	
 	protected virtual void Scale(){	
@@ -54,5 +57,12 @@ public abstract class Spawnable : MonoBehaviour {
 	}
 	public void Die(){
 		Destroy (gameObject);
+	}
+	
+	private void MoveOffset(){
+		transform.Translate(new Vector3(0,0,zOffset));
+	}
+	public void SendScore(){
+		gm.IncrementScore(score);
 	}
 }

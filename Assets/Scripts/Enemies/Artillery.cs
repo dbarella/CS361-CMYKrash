@@ -8,10 +8,15 @@ public class Artillery : Enemy {
 	public GameObject reticulePrefab;	//The "target", which spawns its own explosion after a timer.
 	public float firingInterval;	//The time between 
 	private float fireTimer;	//Internal cooldown timer on firing
+	
+	public AudioClip clip;
+	public GameObject explosion;
 
 	// Use this for initialization
 	void Start () {
-	
+		//deathBlip = GetComponent<AudioSource>();
+		deathClip = clip;
+		explosionPrefab = explosion;
 	}
 	
 	// Move forward until a certain point, then begin launching attacks.
@@ -35,5 +40,9 @@ public class Artillery : Enemy {
 		}
 		if(fireTimer > 0)
 			fireTimer -= Time.fixedDeltaTime;	
+	}
+	
+	new void Die(){
+		Destroy(gameObject);
 	}
 }
